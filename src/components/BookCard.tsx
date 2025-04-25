@@ -6,15 +6,40 @@ interface BookCardProps {
 
 export const BookCard = ({ book }: BookCardProps) => {
   const { volumeInfo } = book
-  const thumbnail = volumeInfo.imageLinks?.thumbnail || '/placeholder-book.jpg'
+
+  // Improved image URL handling
+  const getBookCoverUrl = () => {
+    if (!volumeInfo.imageLinks) {
+      return 'https://via.placeholder.com/300x450/e2e8f0/64748b?text=No+Cover'
+    }
+
+    // Try to get the highest quality image available
+    const imageUrl =
+      volumeInfo.imageLinks.thumbnail || volumeInfo.imageLinks.smallThumbnail
+
+    if (!imageUrl) {
+      return 'https://via.placeholder.com/300x450/e2e8f0/64748b?text=No+Cover'
+    }
+
+    // Convert to HTTPS and get higher quality version
+    return imageUrl
+      .replace('http://', 'https://')
+      .replace('zoom=1', 'zoom=2')
+      .replace('&edge=curl', '') // Remove the curl effect
+  }
 
   return (
     <div className="flex flex-col overflow-hidden rounded-lg shadow transition hover:shadow-lg">
       <div className="relative aspect-[3/4] bg-gray-200">
         <img
-          src={thumbnail}
-          alt={volumeInfo.title}
+          src={getBookCoverUrl()}
+          alt={`${volumeInfo.title} cover`}
           className="absolute inset-0 h-full w-full object-cover"
+          loading="lazy"
+          onError={e => {
+            e.currentTarget.src =
+              'https://via.placeholder.com/300x450/e2e8f0/64748b?text=No+Cover'
+          }}
         />
       </div>
       <div className="flex flex-1 flex-col justify-between p-4">

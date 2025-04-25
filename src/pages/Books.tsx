@@ -3,11 +3,14 @@ import { useSearchBooks } from '../hooks/useBooks'
 import { BookCard } from '../components/BookCard'
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline'
 import { SignalSlashIcon } from '@heroicons/react/24/solid'
+import { MediaTrendingSection } from '../components/MediaTrendingSection'
 
 export const Books = () => {
   const [startIndex, setStartIndex] = useState(0)
   const [searchQuery, setSearchQuery] = useState('')
-  const [debouncedQuery, setDebouncedQuery] = useState('')
+  const [debouncedQuery, setDebouncedQuery] = useState(
+    'subject:fiction bestseller'
+  )
   const [isOffline, setIsOffline] = useState(!navigator.onLine)
 
   const {
@@ -46,6 +49,11 @@ export const Books = () => {
 
   return (
     <div className="py-6">
+      <MediaTrendingSection
+        mediaType="book"
+        title="Trending Books"
+        subtitle="Discover the most popular books right now"
+      />
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between">
           <h1 className="text-2xl font-semibold text-gray-900">Books</h1>

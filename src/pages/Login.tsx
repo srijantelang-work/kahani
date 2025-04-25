@@ -9,7 +9,7 @@ export const Login = () => {
 
   useEffect(() => {
     if (user) {
-      const from = (location.state as any)?.from?.pathname || '/'
+      const from = (location.state as any)?.from?.pathname || '/landing'
       navigate(from, { replace: true })
     }
   }, [user, navigate, location])

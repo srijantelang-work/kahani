@@ -1,155 +1,251 @@
-import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import {
+  BeakerIcon,
   ChartBarIcon,
-  LockClosedIcon,
-  ArrowPathIcon,
-  DevicePhoneMobileIcon,
+  BookmarkIcon,
+  ChatBubbleBottomCenterTextIcon,
+  CogIcon,
+  StarIcon,
 } from '@heroicons/react/24/outline'
+import { Navbar } from '../components/layout/Navbar'
+import { useState } from 'react'
+import { TrendingSection } from '../components/TrendingSection'
+import { useAuth } from '../hooks/useAuth'
 
 interface Feature {
   name: string
   description: string
-  icon: typeof ChartBarIcon
+  icon: typeof BeakerIcon
 }
 
 const features: Feature[] = [
   {
-    name: 'Advanced Analytics',
-    description: 'Get detailed insights into your reading habits and progress.',
+    name: 'AI-Powered Discovery',
+    description:
+      'Uses advanced AI to understand your preferences and provide tailored recommendations.',
+    icon: BeakerIcon,
+  },
+  {
+    name: 'Trending Content',
+    description: "Stay updated with what's popular right now.",
     icon: ChartBarIcon,
   },
   {
-    name: 'Secure Storage',
-    description: 'Your stories and data are encrypted and safely stored.',
-    icon: LockClosedIcon,
-  },
-  {
-    name: 'Real-time Sync',
-    description: 'Access your content seamlessly across all your devices.',
-    icon: ArrowPathIcon,
-  },
-  {
-    name: 'Mobile Optimized',
-    description: 'Enjoy a smooth reading experience on any device.',
-    icon: DevicePhoneMobileIcon,
+    name: 'Save Favorites',
+    description:
+      'Create your personal collection of favorite movies and shows for easy access.',
+    icon: BookmarkIcon,
   },
 ]
 
-const SkeletonLoader = () => (
-  <div className="animate-pulse">
-    <div className="mb-4 h-8 w-3/4 rounded bg-gray-200"></div>
-    <div className="mb-8 h-4 w-1/2 rounded bg-gray-200"></div>
-    <div className="space-y-3">
-      {[1, 2, 3].map(i => (
-        <div key={i} className="h-4 rounded bg-gray-200"></div>
-      ))}
-    </div>
-  </div>
-)
+const howItWorks = [
+  {
+    name: 'Describe What You Like',
+    description:
+      "Tell us what you're in the mood for using natural language, just like chatting with a friend.",
+    icon: ChatBubbleBottomCenterTextIcon,
+  },
+  {
+    name: 'AI Analyzes Your Preferences',
+    description:
+      'Our AI understands your tastes and searches through thousands of titles to find perfect matches.',
+    icon: CogIcon,
+  },
+  {
+    name: 'Get Personalized Recommendations',
+    description:
+      "Receive curated suggestions that match exactly what you're looking for, with details on where to watch.",
+    icon: StarIcon,
+  },
+]
 
 export const Landing = () => {
-  const [isLoading, setIsLoading] = useState(true)
+  const { user } = useAuth()
+  const [selectedPoster, setSelectedPoster] = useState<number | null>(null)
 
-  useEffect(() => {
-    // Simulate content loading
-    const timer = setTimeout(() => {
-      setIsLoading(false)
-    }, 1000)
-
-    return () => clearTimeout(timer)
-  }, [])
+  const posters = [
+    { id: 1, angle: -20, translateX: '-20%' },
+    { id: 2, angle: 0, translateX: '0%' },
+    { id: 3, angle: 20, translateX: '20%' },
+  ]
 
   return (
-    <div className="bg-white">
+    <div className="min-h-screen bg-black text-white">
+      <Navbar />
+
       {/* Hero Section */}
-      <div className="relative overflow-hidden">
+      <div className="relative overflow-hidden pt-16">
         <div className="mx-auto max-w-7xl">
-          <div className="relative z-10 bg-white pb-8 sm:pb-16 md:pb-20 lg:w-full lg:max-w-2xl lg:pb-28 xl:pb-32">
-            <main className="mx-auto mt-10 max-w-7xl px-4 sm:mt-12 sm:px-6 lg:mt-16 lg:px-8 xl:mt-20">
-              {isLoading ? (
-                <SkeletonLoader />
-              ) : (
-                <div className="sm:text-center lg:text-left">
-                  <h1 className="text-4xl font-extrabold tracking-tight text-gray-900 sm:text-5xl md:text-6xl">
-                    <span className="block xl:inline">
-                      Your stories deserve
-                    </span>{' '}
-                    <span className="block text-indigo-600 xl:inline">
-                      to be shared
-                    </span>
-                  </h1>
-                  <p className="mt-3 text-base text-gray-500 sm:mx-auto sm:mt-5 sm:max-w-xl sm:text-lg md:mt-5 md:text-xl lg:mx-0">
-                    Create, share, and discover amazing stories. Join our
-                    community of storytellers and readers today.
-                  </p>
-                  <div className="mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-start">
-                    <div className="rounded-md shadow">
+          <div className="relative z-10 bg-black pb-8 sm:pb-16 md:pb-20 lg:w-full lg:max-w-2xl lg:pb-28 xl:pb-32">
+            <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+              <div className="flex min-h-[calc(100vh-4rem)] flex-col justify-center sm:text-center lg:text-left">
+                <h1 className="text-6xl font-extrabold tracking-tight sm:text-7xl md:text-8xl">
+                  <span className="block font-bold">Discover Your Next</span>{' '}
+                  <span className="block text-red-600">
+                    Favorite Show or Movie or Book
+                  </span>
+                </h1>
+                <p className="mt-6 text-xl text-gray-300 sm:mx-auto sm:mt-8 sm:max-w-xl sm:text-2xl md:mt-8 md:text-2xl lg:mx-0">
+                  Kahani uses AI to provide personalized recommendations based
+                  on your unique preferences and interests.
+                </p>
+                <div className="mt-10 flex flex-col space-y-3 sm:flex-row sm:space-x-4 sm:space-y-0">
+                  {user ? (
+                    <Link
+                      to="/dashboard"
+                      className="flex items-center justify-center rounded-md bg-red-600 px-6 py-3 text-base font-medium text-white transition-colors hover:bg-red-700"
+                    >
+                      Go to Dashboard
+                    </Link>
+                  ) : (
+                    <>
                       <Link
-                        to="/signin"
-                        className="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 md:px-10 md:py-4 md:text-lg"
+                        to="/dashboard"
+                        className="flex items-center justify-center rounded-md bg-red-600 px-6 py-3 text-base font-medium text-white transition-colors hover:bg-red-700"
                       >
-                        Get Started
+                        Get Started — It's Free
                       </Link>
-                    </div>
-                    <div className="mt-3 sm:ml-3 sm:mt-0">
-                      <a
-                        href="#features"
-                        className="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-100 px-8 py-3 text-base font-medium text-indigo-700 hover:bg-indigo-200 md:px-10 md:py-4 md:text-lg"
+                      <Link
+                        to="/login"
+                        className="flex items-center justify-center rounded-md border border-gray-600 bg-transparent px-6 py-3 text-base font-medium text-white transition-colors hover:bg-white/5"
                       >
-                        Learn More
-                      </a>
-                    </div>
-                  </div>
+                        Sign In
+                      </Link>
+                    </>
+                  )}
                 </div>
-              )}
+              </div>
             </main>
           </div>
         </div>
         <div className="lg:absolute lg:inset-y-0 lg:right-0 lg:w-1/2">
-          <div className="h-56 w-full bg-gradient-to-r from-indigo-500 to-purple-600 object-cover sm:h-72 md:h-96 lg:h-full lg:w-full"></div>
+          <div className="relative h-full w-full">
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="relative mt-16 h-[500px] w-[350px]">
+                {posters.map(poster => (
+                  <div
+                    key={poster.id}
+                    onClick={() =>
+                      setSelectedPoster(
+                        selectedPoster === poster.id ? null : poster.id
+                      )
+                    }
+                    className={`absolute left-1/2 top-1/2 aspect-[2/3] w-full cursor-pointer transition-all duration-500 ease-out
+                      ${
+                        selectedPoster === poster.id
+                          ? 'z-30 scale-105'
+                          : selectedPoster === null
+                            ? 'hover:scale-102'
+                            : 'scale-95 opacity-50'
+                      }`}
+                    style={{
+                      transform: `translate(-50%, -50%) 
+                        translateX(${selectedPoster === null ? poster.translateX : '0%'})
+                        rotate(${selectedPoster === null ? poster.angle : 0}deg)
+                        ${selectedPoster === poster.id ? 'translateZ(50px)' : ''}`,
+                      zIndex:
+                        selectedPoster === poster.id ? 30 : 20 - poster.id,
+                    }}
+                  >
+                    <img
+                      src={`/images/poster${poster.id}.jpg`}
+                      alt={`Movie Poster ${poster.id}`}
+                      className="h-full w-full rounded-lg object-cover shadow-xl transition-shadow duration-500"
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
-      {/* Feature Section */}
-      <div id="features" className="bg-white py-12">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          {isLoading ? (
-            <SkeletonLoader />
-          ) : (
-            <>
-              <div className="lg:text-center">
-                <h2 className="text-base font-semibold uppercase tracking-wide text-indigo-600">
-                  Features
-                </h2>
-                <p className="mt-2 text-3xl font-extrabold leading-8 tracking-tight text-gray-900 sm:text-4xl">
-                  Everything you need to tell your story
-                </p>
-                <p className="mt-4 max-w-2xl text-xl text-gray-500 lg:mx-auto">
-                  Our platform provides all the tools you need to create,
-                  manage, and share your stories with the world.
-                </p>
-              </div>
+      {/* Trending Section */}
+      <TrendingSection />
 
-              <div className="mt-10">
-                <div className="space-y-10 md:grid md:grid-cols-2 md:gap-x-8 md:gap-y-10 md:space-y-0">
-                  {features.map(feature => (
-                    <div key={feature.name} className="relative">
-                      <div className="absolute flex h-12 w-12 items-center justify-center rounded-md bg-indigo-500 text-white">
-                        <feature.icon className="h-6 w-6" aria-hidden="true" />
-                      </div>
-                      <p className="ml-16 text-lg font-medium leading-6 text-gray-900">
-                        {feature.name}
-                      </p>
-                      <p className="ml-16 mt-2 text-base text-gray-500">
-                        {feature.description}
-                      </p>
-                    </div>
-                  ))}
+      {/* Features Section */}
+      <div id="features" className="bg-neutral-900 py-24">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="lg:text-center">
+            <h2 className="text-4xl font-bold uppercase tracking-wider text-red-600">
+              FEATURES
+            </h2>
+            <p className="mt-2 text-3xl font-extrabold leading-8 tracking-tight text-white sm:text-4xl">
+              Powered by AI for Perfect Recommendations
+            </p>
+          </div>
+
+          <div className="mt-20">
+            <div className="grid grid-cols-1 gap-12 lg:grid-cols-3">
+              {features.map(feature => (
+                <div key={feature.name} className="relative">
+                  <div className="absolute flex h-12 w-12 items-center justify-center rounded-md bg-red-600 text-white">
+                    <feature.icon className="h-6 w-6" aria-hidden="true" />
+                  </div>
+                  <p className="ml-16 text-lg font-medium leading-6 text-white">
+                    {feature.name}
+                  </p>
+                  <p className="ml-16 mt-2 text-base text-gray-300">
+                    {feature.description}
+                  </p>
                 </div>
-              </div>
-            </>
-          )}
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* How It Works Section */}
+      <div id="how-it-works" className="bg-black py-24">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="lg:text-center">
+            <h2 className="text-4xl font-bold uppercase tracking-wider text-red-600">
+              HOW IT WORKS
+            </h2>
+            <p className="mt-2 text-3xl font-extrabold leading-8 tracking-tight text-white sm:text-4xl">
+              Three Simple Steps
+            </p>
+          </div>
+
+          <div className="mt-20">
+            <div className="grid grid-cols-1 gap-12 lg:grid-cols-3">
+              {howItWorks.map((step, index) => (
+                <div key={step.name} className="relative">
+                  <div className="absolute flex h-12 w-12 items-center justify-center rounded-full bg-red-600 text-white">
+                    <span className="text-lg font-bold">{index + 1}</span>
+                  </div>
+                  <p className="ml-16 text-lg font-medium leading-6 text-white">
+                    {step.name}
+                  </p>
+                  <p className="ml-16 mt-2 text-base text-gray-300">
+                    {step.description}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* CTA Section */}
+      <div className="bg-red-600">
+        <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:flex lg:items-center lg:justify-between lg:px-8 lg:py-16">
+          <h2 className="text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
+            <span className="block">Ready to Discover Your Next Favorite?</span>
+            <span className="block text-red-100">
+              Join thousands of users who have found their perfect match.
+            </span>
+          </h2>
+          <div className="mt-8 flex lg:mt-0 lg:flex-shrink-0">
+            <div className="inline-flex rounded-md shadow">
+              <Link
+                to="/dashboard"
+                className="inline-flex items-center justify-center rounded-md border border-transparent bg-white px-5 py-3 text-base font-medium text-red-600 hover:bg-red-50"
+              >
+                Get Started — It's Free
+              </Link>
+            </div>
+          </div>
         </div>
       </div>
     </div>

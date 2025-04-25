@@ -1,133 +1,184 @@
-import { useParams } from 'react-router-dom'
-import { useQuery } from '@tanstack/react-query'
-import { apiClient } from '../lib/api-client'
-import { ContentDetail } from '../components/ContentDetail'
-import { ContentCarousel } from '../components/ContentCarousel'
+import { useParams, useNavigate } from 'react-router-dom'
+import { useState, useEffect } from 'react'
+import { getImageUrl } from '../config/api'
+import { ArrowLeftIcon } from '@heroicons/react/24/outline'
 
-interface TVShowDetail {
+interface Season {
   id: number
   name: string
   overview: string
-  poster_path: string | null
-  backdrop_path: string | null
+  poster_path: string
+  air_date: string
+  episode_count: number
+  season_number: number
+}
+
+interface TVShowDetails {
+  id: number
+  name: string
+  overview: string
+  poster_path: string
+  backdrop_path: string
   first_air_date: string
   vote_average: number
   vote_count: number
-  genres: { id: number; name: string }[]
   number_of_seasons: number
   number_of_episodes: number
-  status: string
-  networks: { id: number; name: string; logo_path: string | null }[]
-  seasons: {
+  seasons: Season[]
+  genres: Array<{
     id: number
     name: string
-    overview: string
-    poster_path: string | null
-    episode_count: number
-    air_date: string
-    season_number: number
-  }[]
+  }>
+  status: string
+  networks: Array<{
+    id: number
+    name: string
+    logo_path: string
+  }>
 }
 
 export const TVShowDetail = () => {
-  const { id } = useParams<{ id: string }>()
+  const { id } = useParams()
+  const navigate = useNavigate()
+  const [show, setShow] = useState<TVShowDetails | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
-  const { data: show, isLoading } = useQuery<TVShowDetail>({
-    queryKey: ['tv', id],
-    queryFn: async () => {
-      const { data } = await apiClient.get<TVShowDetail>(`/tv/${id}`)
-      return data
-    },
-    enabled: !!id,
-    staleTime: 10 * 60 * 1000, // 10 minutes
-  })
+  useEffect(() => {
+    const fetchTVShow = async () => {
+      try {
+        setLoading(true)
+        const response = await fetch(
+          `https://api.themoviedb.org/3/tv/${id}?api_key=${import.meta.env.VITE_TMDB_API_KEY}&language=en-US`
+        )
+        if (!response.ok) {
+          throw new Error('TV show not found')
+        }
+        const data = await response.json()
+        setShow(data)
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Failed to fetch TV show')
+      } finally {
+        setLoading(false)
+      }
+    }
 
-  const additionalInfo = show && (
-    <div className="space-y-8">
-      <div>
-        <h3 className="text-xl font-semibold">Details</h3>
-        <dl className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
-          <div>
-            <dt className="text-sm text-gray-400">Status</dt>
-            <dd>{show.status}</dd>
-          </div>
-          <div>
-            <dt className="text-sm text-gray-400">Networks</dt>
-            <dd className="flex gap-2">
-              {show.networks.map(network => (
-                <span key={network.id}>{network.name}</span>
-              ))}
-            </dd>
-          </div>
-          <div>
-            <dt className="text-sm text-gray-400">Seasons</dt>
-            <dd>{show.number_of_seasons}</dd>
-          </div>
-          <div>
-            <dt className="text-sm text-gray-400">Episodes</dt>
-            <dd>{show.number_of_episodes}</dd>
-          </div>
-        </dl>
+    fetchTVShow()
+  }, [id])
+
+  if (loading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-red-600 border-t-transparent"></div>
       </div>
+    )
+  }
 
-      {show.seasons.length > 0 && (
-        <div>
-          <h3 className="text-xl font-semibold">Seasons</h3>
-          <div className="mt-4">
-            <ContentCarousel
-              items={show.seasons}
-              renderItem={season => (
-                <div className="w-48 flex-shrink-0">
-                  <div className="aspect-[2/3] overflow-hidden rounded-lg">
-                    <img
-                      src={
-                        season.poster_path
-                          ? `https://image.tmdb.org/t/p/w300${season.poster_path}`
-                          : '/placeholder-poster.jpg'
-                      }
-                      alt={season.name}
-                      className="h-full w-full object-cover"
-                    />
-                  </div>
-                  <div className="mt-2">
-                    <h4 className="line-clamp-1 font-medium">{season.name}</h4>
-                    <p className="text-sm text-gray-300">
-                      {season.episode_count} episodes
-                    </p>
-                  </div>
-                </div>
-              )}
-            />
-          </div>
-        </div>
-      )}
-    </div>
-  )
+  if (error || !show) {
+    return (
+      <div className="flex min-h-screen flex-col items-center justify-center">
+        <p className="text-xl text-red-600">{error || 'TV show not found'}</p>
+        <button
+          onClick={() => navigate(-1)}
+          className="mt-4 flex items-center text-gray-300 hover:text-white"
+        >
+          <ArrowLeftIcon className="mr-2 h-5 w-5" />
+          Go Back
+        </button>
+      </div>
+    )
+  }
 
   return (
-    <ContentDetail
-      loading={isLoading}
-      title={show?.name ?? ''}
-      releaseDate={
-        show?.first_air_date
-          ? new Date(show.first_air_date).getFullYear().toString()
-          : undefined
-      }
-      rating={show?.vote_average}
-      ratingCount={show?.vote_count}
-      posterImage={
-        show?.poster_path
-          ? `https://image.tmdb.org/t/p/w500${show.poster_path}`
-          : undefined
-      }
-      backdropImage={
-        show?.backdrop_path
-          ? `https://image.tmdb.org/t/p/original${show.backdrop_path}`
-          : undefined
-      }
-      overview={show?.overview}
-      genres={show?.genres.map(g => g.name)}
-      additionalInfo={additionalInfo}
-    />
+    <div className="min-h-screen bg-black py-8">
+      <div className="container mx-auto px-4">
+        <button
+          onClick={() => navigate(-1)}
+          className="mb-6 flex items-center text-gray-300 hover:text-white"
+        >
+          <ArrowLeftIcon className="mr-2 h-5 w-5" />
+          Back to TV Shows
+        </button>
+
+        {/* Show Header */}
+        <div className="mb-8 grid gap-8 lg:grid-cols-3">
+          <div className="lg:col-span-1">
+            <img
+              src={getImageUrl(show.poster_path)}
+              alt={show.name}
+              className="w-full rounded-lg shadow-lg"
+            />
+          </div>
+          <div className="lg:col-span-2">
+            <h1 className="mb-4 text-4xl font-bold text-white">{show.name}</h1>
+            <div className="mb-6 flex flex-wrap items-center gap-4">
+              <span className="rounded-full bg-red-900/50 px-3 py-1 text-sm text-white">
+                {new Date(show.first_air_date).getFullYear()}
+              </span>
+              <span className="rounded-full bg-red-900/50 px-3 py-1 text-sm text-white">
+                {show.number_of_seasons} Seasons
+              </span>
+              <span className="flex items-center rounded-full bg-red-900/50 px-3 py-1 text-sm text-white">
+                <span className="mr-1">★</span>
+                {show.vote_average.toFixed(1)}
+              </span>
+            </div>
+            <p className="mb-6 text-lg leading-relaxed text-gray-300">
+              {show.overview}
+            </p>
+            <div className="mb-6">
+              <h2 className="mb-2 text-xl font-semibold text-white">Genres</h2>
+              <div className="flex flex-wrap gap-2">
+                {show.genres.map(genre => (
+                  <span
+                    key={genre.id}
+                    className="rounded-full bg-red-600/20 px-3 py-1 text-sm text-red-400"
+                  >
+                    {genre.name}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Seasons Section */}
+        <div className="mt-12">
+          <h2 className="mb-6 text-2xl font-bold text-white">Seasons</h2>
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5">
+            {show.seasons
+              .filter(season => season.season_number > 0) // Filter out specials
+              .map(season => (
+                <div
+                  key={season.id}
+                  className="flex flex-col overflow-hidden rounded-lg bg-gray-900"
+                >
+                  <div className="aspect-[2/3] w-full overflow-hidden">
+                    <img
+                      src={getImageUrl(season.poster_path)}
+                      alt={`${show.name} ${season.name}`}
+                      className="h-full w-full object-cover object-center"
+                      loading="lazy"
+                    />
+                  </div>
+                  <div className="flex flex-1 flex-col p-4">
+                    <h3 className="text-lg font-medium text-white">
+                      {season.name}
+                    </h3>
+                    <p className="mt-1 text-sm text-gray-400">
+                      {season.episode_count} Episodes
+                    </p>
+                    {season.air_date && (
+                      <p className="mt-1 text-sm text-gray-400">
+                        {new Date(season.air_date).getFullYear()}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              ))}
+          </div>
+        </div>
+      </div>
+    </div>
   )
 }

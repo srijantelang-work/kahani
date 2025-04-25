@@ -20,7 +20,7 @@ export const AuthCallback = () => {
         if (session) {
           setUser(session.user)
           setSession(session)
-          navigate('/', { replace: true })
+          navigate('/landing', { replace: true })
         }
       } catch (error) {
         console.error('Error during auth callback:', error)

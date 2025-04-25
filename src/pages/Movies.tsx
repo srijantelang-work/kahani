@@ -3,6 +3,7 @@ import { useMovies, useSearchMovies } from '../hooks/useMovies'
 import { MovieCard } from '../components/MovieCard'
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline'
 import { TMDBMovie, TMDBResponse } from '../config/api'
+import { MediaTrendingSection } from '../components/MediaTrendingSection'
 
 export const Movies = () => {
   const [page, setPage] = useState(1)
@@ -40,6 +41,11 @@ export const Movies = () => {
 
   return (
     <div className="py-6">
+      <MediaTrendingSection
+        mediaType="movie"
+        title="Trending Movies"
+        subtitle="Discover the most popular movies right now"
+      />
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between">
           <h1 className="text-2xl font-semibold text-gray-900">Movies</h1>

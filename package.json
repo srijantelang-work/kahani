@@ -14,6 +14,7 @@
     "lint-staged": "lint-staged"
   },
   "dependencies": {
+    "@google/generative-ai": "^0.24.0",
     "@headlessui/react": "^1.7.18",
     "@heroicons/react": "^2.2.0",
     "@radix-ui/react-slot": "^1.0.2",
@@ -26,8 +27,9 @@
     "localforage": "^1.10.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-icons": "^5.5.0",
     "react-intersection-observer": "^9.16.0",
-    "react-router-dom": "^6.21.3",
+    "react-router-dom": "^6.30.0",
     "tailwindcss-animate": "^1.0.7",
     "zustand": "^4.5.0"
   },

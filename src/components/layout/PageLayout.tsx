@@ -14,7 +14,7 @@ export function PageLayout({
   fullWidth = false,
 }: PageLayoutProps) {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-black text-white">
       <Navigation />
       <main
         className={cn(

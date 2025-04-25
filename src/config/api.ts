@@ -6,12 +6,22 @@ export interface TMDBMovie {
   id: number
   title: string
   overview: string
-  poster_path: string | null
-  backdrop_path: string | null
+  poster_path: string
+  backdrop_path: string
   release_date: string
   vote_average: number
   vote_count: number
-  genre_ids: number[]
+  runtime: number
+  genres: Array<{
+    id: number
+    name: string
+  }>
+  production_companies: Array<{
+    id: number
+    name: string
+    logo_path: string | null
+    origin_country: string
+  }>
 }
 
 export interface TMDBResponse<T> {
@@ -48,10 +58,7 @@ export interface GoogleBooksResponse {
   items: GoogleBooksVolume[]
 }
 
-export const getImageUrl = (
-  path: string | null,
-  size: string = 'w500'
-): string => {
-  if (!path) return '/placeholder-image.jpg'
-  return `${TMDB_IMAGE_BASE_URL}/${size}${path}`
+export const getImageUrl = (path: string | null) => {
+  if (!path) return '/placeholder-movie.jpg'
+  return `https://image.tmdb.org/t/p/w500${path}`
 }

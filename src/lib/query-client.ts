@@ -13,7 +13,7 @@ export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       staleTime: 5 * 60 * 1000, // Data is considered fresh for 5 minutes
-      cacheTime: 24 * 60 * 60 * 1000, // Cache is kept for 24 hours
+      gcTime: 24 * 60 * 60 * 1000, // Cache is kept for 24 hours
       retry: 3, // Retry failed requests 3 times
       retryDelay: attemptIndex => Math.min(1000 * 2 ** attemptIndex, 30000), // Exponential backoff
       refetchOnWindowFocus: false, // Don't refetch when window regains focus
