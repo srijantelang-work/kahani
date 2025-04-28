@@ -1,0 +1,5 @@
+VITE_SUPABASE_URL=https:supabase_url
+VITE_SUPABASE_ANON_KEY=anon_key
+VITE_TMDB_API_KEY=tmdb_apikey
+VITE_GOOGLE_BOOKS_API_KEY=google_books_apikey
+VITE_GEMINI_API_KEY=gemini_api_key
