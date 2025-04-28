@@ -6,11 +6,8 @@ interface TMDBErrorResponse {
   status_code?: number
 }
 
-// Get API key from the appropriate environment variable source
-const API_KEY =
-  import.meta.env?.VITE_TMDB_API_KEY ||
-  import.meta.env?.REACT_APP_TMDB_API_KEY ||
-  window.__RUNTIME_CONFIG__?.REACT_APP_TMDB_API_KEY
+// Get API key from Vite environment variables
+const API_KEY = import.meta.env.VITE_TMDB_API_KEY
 
 if (!API_KEY) {
   console.error('TMDB API key is not defined in environment variables')

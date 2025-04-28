@@ -34,7 +34,7 @@ interface RecommendationItem {
 }
 
 export const useRecommendations = () => {
-  const { generateText } = useGeminiContext()
+  const { generateRecommendations } = useGeminiContext()
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<Error | null>(null)
 
@@ -42,7 +42,7 @@ export const useRecommendations = () => {
     filters: RecommendationFilters,
     history: string[]
   ): string => {
-    let prompt = `Generate personalized ${filters.mediaType} recommendations based on the following criteria:\n`
+    let prompt = `Generate personalized ${filters.mediaType} recommendations based on the following criteria:`
 
     if (filters.mood) {
       prompt += `\nMood: ${filters.mood}`
@@ -64,21 +64,6 @@ export const useRecommendations = () => {
       prompt += `\nExclude these titles: ${history.join(', ')}`
     }
 
-    prompt += `\n\nProvide recommendations in the following JSON format:
-    {
-      "recommendations": [
-        {
-          "title": "Title",
-          "description": "Brief description",
-          "genres": ["genre1", "genre2"],
-          "rating": 8.5,
-          "length": 120,
-          "mood": ["mood1", "mood2"],
-          "reason": "Why this is recommended based on criteria"
-        }
-      ]
-    }`
-
     return prompt
   }
 
@@ -92,14 +77,16 @@ export const useRecommendations = () => {
 
       try {
         const prompt = generatePrompt(filters, history)
-        const response = await generateText(prompt)
-
-        try {
-          const data = JSON.parse(response.text)
-          return data.recommendations
-        } catch (parseError) {
-          throw new Error('Failed to parse recommendations')
-        }
+        const recommendations = await generateRecommendations(
+          prompt,
+          filters.mediaType,
+          filters.genres
+        )
+        return recommendations.map(rec => ({
+          ...rec,
+          type: filters.mediaType,
+          mood: [filters.mood || 'neutral'],
+        }))
       } catch (error) {
         setError(error instanceof Error ? error : new Error('Unknown error'))
         return []
@@ -107,7 +94,7 @@ export const useRecommendations = () => {
         setLoading(false)
       }
     },
-    [generateText]
+    [generateRecommendations]
   )
 
   const getMoodBasedPrompt = (mood: Mood): string => {
