@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom'
-import { SparklesIcon } from '@heroicons/react/24/solid'
 import { useAuth } from '../../hooks/useAuth'
 
 export const Navbar = () => {
@@ -11,7 +10,7 @@ export const Navbar = () => {
         <div className="flex h-16 items-center justify-between">
           <div className="flex items-center">
             <Link to="/" className="flex items-center space-x-2">
-              <SparklesIcon className="h-8 w-8 text-red-600" />
+              <img src="/icon.png" alt="Kahani" className="h-12 w-12" />
               <span className="text-2xl font-bold text-white">Kahani</span>
             </Link>
           </div>
