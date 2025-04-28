@@ -7,6 +7,8 @@ const localStoragePersister = createSyncStoragePersister({
   storage: window.localStorage,
   key: 'KAHANI_CACHE', // Prefix for cache entries
   throttleTime: 1000, // Time (in ms) to throttle saving to storage
+  serialize: data => JSON.stringify(data),
+  deserialize: str => JSON.parse(str),
 })
 
 export const queryClient = new QueryClient({
@@ -26,6 +28,9 @@ export const queryClient = new QueryClient({
 persistQueryClient({
   queryClient,
   persister: localStoragePersister,
+  dehydrateOptions: {
+    shouldDehydrateQuery: () => true,
+  },
   maxAge: 24 * 60 * 60 * 1000, // Cache persists for 24 hours
-  buster: process.env.REACT_APP_VERSION || '1.0.0', // Cache buster on app updates
+  buster: import.meta.env.VITE_APP_VERSION || '1.0.0', // Cache buster on app updates
 })

@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 import { useAuthStore } from '../stores/authStore'
+import { User } from '../types/auth'
 
 export const AuthCallback = () => {
   const navigate = useNavigate()
@@ -16,9 +17,14 @@ export const AuthCallback = () => {
         } = await supabase.auth.getSession()
 
         if (error) throw error
-
         if (session) {
-          setUser(session.user)
+          const userWithExtras: User = {
+            ...session.user,
+            displayName:
+              session.user.user_metadata?.name || session.user.email || '',
+            photoURL: session.user.user_metadata?.avatar_url || '',
+          }
+          setUser(userWithExtras)
           setSession(session)
           navigate('/landing', { replace: true })
         }
