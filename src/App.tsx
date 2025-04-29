@@ -1,9 +1,4 @@
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Navigate,
-} from 'react-router-dom'
+import { Routes, Route, Navigate } from 'react-router-dom'
 import { Layout } from './components/layout/Layout'
 import { useAuth } from './hooks/useAuth'
 import { SearchProvider } from './contexts/SearchContext'
@@ -21,6 +16,8 @@ import { TVShowDetail } from './pages/TVShowDetail'
 import { AuthCallback } from './pages/AuthCallback'
 import { Promptpage } from './pages/Promptpage'
 import { MovieDetail } from './pages/MovieDetail'
+import { PrivacyPolicy } from './pages/PrivacyPolicy'
+import { TermsOfService } from './pages/TermsOfService'
 
 interface ProtectedRouteProps {
   children: React.ReactNode
@@ -49,100 +46,112 @@ export const App = () => {
       retryDelay={1000}
     >
       <SearchProvider>
-        <Router>
-          <Routes>
-            <Route
-              path="/"
-              element={
-                isAuthenticated ? <Navigate to="/landing" /> : <Landing />
-              }
-            />
-            <Route path="/login" element={<Login />} />
-            <Route path="/landing" element={<Landing />} />
-            <Route
-              path="/dashboard"
-              element={
-                <Layout>
-                  <ProtectedRoute>
-                    <Promptpage />
-                  </ProtectedRoute>
-                </Layout>
-              }
-            />
-            <Route
-              path="/movies"
-              element={
-                <Layout>
-                  <ProtectedRoute>
-                    <Movies />
-                  </ProtectedRoute>
-                </Layout>
-              }
-            />
-            <Route
-              path="/movie/:id"
-              element={
-                <Layout>
-                  <ProtectedRoute>
-                    <MovieDetail />
-                  </ProtectedRoute>
-                </Layout>
-              }
-            />
-            <Route
-              path="/tv"
-              element={
-                <Layout>
-                  <ProtectedRoute>
-                    <TVShows />
-                  </ProtectedRoute>
-                </Layout>
-              }
-            />
-            <Route
-              path="/tv/:id"
-              element={
-                <Layout>
-                  <ProtectedRoute>
-                    <TVShowDetail />
-                  </ProtectedRoute>
-                </Layout>
-              }
-            />
-            <Route
-              path="/books"
-              element={
-                <Layout>
-                  <ProtectedRoute>
-                    <Books />
-                  </ProtectedRoute>
-                </Layout>
-              }
-            />
-            <Route
-              path="/profile"
-              element={
-                <Layout>
-                  <ProtectedRoute>
-                    <Profile />
-                  </ProtectedRoute>
-                </Layout>
-              }
-            />
-            <Route
-              path="/settings"
-              element={
-                <Layout>
-                  <ProtectedRoute>
-                    <Settings />
-                  </ProtectedRoute>
-                </Layout>
-              }
-            />
-            <Route path="/auth/callback" element={<AuthCallback />} />
-            <Route path="*" element={<Navigate to="/" replace />} />
-          </Routes>
-        </Router>
+        <Routes>
+          <Route
+            path="/"
+            element={isAuthenticated ? <Navigate to="/landing" /> : <Landing />}
+          />
+          <Route path="/login" element={<Login />} />
+          <Route path="/landing" element={<Landing />} />
+          <Route
+            path="/dashboard"
+            element={
+              <Layout>
+                <ProtectedRoute>
+                  <Promptpage />
+                </ProtectedRoute>
+              </Layout>
+            }
+          />
+          <Route
+            path="/movies"
+            element={
+              <Layout>
+                <ProtectedRoute>
+                  <Movies />
+                </ProtectedRoute>
+              </Layout>
+            }
+          />
+          <Route
+            path="/movie/:id"
+            element={
+              <Layout>
+                <ProtectedRoute>
+                  <MovieDetail />
+                </ProtectedRoute>
+              </Layout>
+            }
+          />
+          <Route
+            path="/tv"
+            element={
+              <Layout>
+                <ProtectedRoute>
+                  <TVShows />
+                </ProtectedRoute>
+              </Layout>
+            }
+          />
+          <Route
+            path="/tv/:id"
+            element={
+              <Layout>
+                <ProtectedRoute>
+                  <TVShowDetail />
+                </ProtectedRoute>
+              </Layout>
+            }
+          />
+          <Route
+            path="/books"
+            element={
+              <Layout>
+                <ProtectedRoute>
+                  <Books />
+                </ProtectedRoute>
+              </Layout>
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              <Layout>
+                <ProtectedRoute>
+                  <Profile />
+                </ProtectedRoute>
+              </Layout>
+            }
+          />
+          <Route
+            path="/settings"
+            element={
+              <Layout>
+                <ProtectedRoute>
+                  <Settings />
+                </ProtectedRoute>
+              </Layout>
+            }
+          />
+          <Route path="/auth/callback" element={<AuthCallback />} />
+          <Route
+            path="/privacy-policy"
+            element={
+              <Layout>
+                <PrivacyPolicy />
+              </Layout>
+            }
+          />
+          <Route
+            path="/terms-of-service"
+            element={
+              <Layout>
+                <TermsOfService />
+              </Layout>
+            }
+          />
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
       </SearchProvider>
     </GeminiProvider>
   )

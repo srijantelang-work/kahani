@@ -1,92 +1,81 @@
-import { Container } from '../components/layout/Container'
+import React from 'react'
 
-export const PrivacyPolicy = () => {
+export const PrivacyPolicy: React.FC = () => {
   return (
-    <div className="min-h-screen bg-black py-12">
-      <Container>
-        <div className="mx-auto max-w-3xl">
-          <h1 className="text-3xl font-bold text-white">Privacy Policy</h1>
-          <div className="mt-8 space-y-8 text-gray-300">
-            <section>
-              <h2 className="text-xl font-semibold text-white">
-                1. Information We Collect
-              </h2>
-              <p className="mt-4">
-                We collect information that you provide directly to us,
-                including:
-              </p>
-              <ul className="mt-2 list-disc pl-6">
-                <li>Account information (name, email, profile picture)</li>
-                <li>Content preferences and viewing history</li>
-                <li>Recommendation requests and feedback</li>
-                <li>Device and usage information</li>
-              </ul>
-            </section>
+    <div className="container mx-auto px-4 py-8">
+      <h1 className="mb-6 text-3xl font-bold">Privacy Policy</h1>
+      <div className="space-y-6">
+        <section>
+          <h2 className="mb-4 text-2xl font-semibold">Introduction</h2>
+          <p className="mb-4">
+            This Privacy Policy describes how we collect, use, and handle your
+            personal information when you use our services. We take your privacy
+            seriously and are committed to protecting your personal information.
+          </p>
+        </section>
 
-            <section>
-              <h2 className="text-xl font-semibold text-white">
-                2. How We Use Your Information
-              </h2>
-              <p className="mt-4">We use the collected information to:</p>
-              <ul className="mt-2 list-disc pl-6">
-                <li>Provide personalized content recommendations</li>
-                <li>Improve our AI recommendation system</li>
-                <li>Communicate with you about our services</li>
-                <li>Ensure security and prevent fraud</li>
-              </ul>
-            </section>
+        <section>
+          <h2 className="mb-4 text-2xl font-semibold">
+            Information We Collect
+          </h2>
+          <p className="mb-4">
+            We collect information that you provide directly to us when you:
+          </p>
+          <ul className="mb-4 list-disc pl-6">
+            <li>Create an account</li>
+            <li>Use our services</li>
+            <li>Contact us for support</li>
+            <li>Subscribe to our newsletters</li>
+          </ul>
+        </section>
 
-            <section>
-              <h2 className="text-xl font-semibold text-white">
-                3. Information Sharing
-              </h2>
-              <p className="mt-4">
-                We do not sell your personal information. We may share your
-                information with:
-              </p>
-              <ul className="mt-2 list-disc pl-6">
-                <li>Service providers who assist in our operations</li>
-                <li>Law enforcement when required by law</li>
-                <li>Other parties with your consent</li>
-              </ul>
-            </section>
+        <section>
+          <h2 className="mb-4 text-2xl font-semibold">
+            How We Use Your Information
+          </h2>
+          <p className="mb-4">We use the information we collect to:</p>
+          <ul className="mb-4 list-disc pl-6">
+            <li>Provide and maintain our services</li>
+            <li>Improve and personalize your experience</li>
+            <li>Communicate with you about our services</li>
+            <li>Protect against fraud and abuse</li>
+          </ul>
+        </section>
 
-            <section>
-              <h2 className="text-xl font-semibold text-white">
-                4. Data Security
-              </h2>
-              <p className="mt-4">
-                We implement appropriate security measures to protect your
-                personal information. However, no method of transmission over
-                the internet is 100% secure.
-              </p>
-            </section>
+        <section>
+          <h2 className="mb-4 text-2xl font-semibold">Data Security</h2>
+          <p className="mb-4">
+            We implement appropriate security measures to protect your personal
+            information from unauthorized access, alteration, disclosure, or
+            destruction.
+          </p>
+        </section>
 
-            <section>
-              <h2 className="text-xl font-semibold text-white">
-                5. Your Rights
-              </h2>
-              <p className="mt-4">You have the right to:</p>
-              <ul className="mt-2 list-disc pl-6">
-                <li>Access your personal information</li>
-                <li>Correct inaccurate information</li>
-                <li>Request deletion of your information</li>
-                <li>Opt-out of certain data processing</li>
-              </ul>
-            </section>
+        <section>
+          <h2 className="mb-4 text-2xl font-semibold">Your Rights</h2>
+          <p className="mb-4">You have the right to:</p>
+          <ul className="mb-4 list-disc pl-6">
+            <li>Access your personal information</li>
+            <li>Correct inaccurate information</li>
+            <li>Request deletion of your information</li>
+            <li>Object to processing of your information</li>
+          </ul>
+        </section>
 
-            <section>
-              <h2 className="text-xl font-semibold text-white">
-                6. Contact Us
-              </h2>
-              <p className="mt-4">
-                If you have questions about this Privacy Policy, please contact
-                us at privacy@kahani.com
-              </p>
-            </section>
-          </div>
-        </div>
-      </Container>
+        <section>
+          <h2 className="mb-4 text-2xl font-semibold">Contact Us</h2>
+          <p className="mb-4">
+            If you have any questions about this Privacy Policy, please contact
+            us at: support@example.com
+          </p>
+        </section>
+
+        <section>
+          <p className="text-sm text-gray-500">
+            Last updated: {new Date().toLocaleDateString()}
+          </p>
+        </section>
+      </div>
     </div>
   )
 }

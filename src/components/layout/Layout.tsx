@@ -4,6 +4,7 @@ import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import { useAuth } from '../../hooks/useAuth'
 import { RecentRecommendations } from './RecentRecommendations'
+import { Footer } from './Footer'
 import {
   HomeIcon,
   LightBulbIcon,
@@ -31,7 +32,7 @@ export const Layout = ({ children }: LayoutProps) => {
   const { user, signOut } = useAuth()
 
   return (
-    <div className="min-h-screen bg-black">
+    <div className="flex min-h-screen flex-col bg-black">
       <Disclosure as="nav" className="border-b border-red-800 bg-black">
         {({ open }) => (
           <>
@@ -191,7 +192,8 @@ export const Layout = ({ children }: LayoutProps) => {
         )}
       </Disclosure>
 
-      <main className="bg-black text-white">{children}</main>
+      <main className="flex-1 bg-black text-white">{children}</main>
+      <Footer />
     </div>
   )
 }

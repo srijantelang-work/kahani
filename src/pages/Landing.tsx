@@ -8,6 +8,7 @@ import {
   StarIcon,
 } from '@heroicons/react/24/outline'
 import { Navbar } from '../components/layout/Navbar'
+import { Footer } from '../components/layout/Footer'
 import { useState } from 'react'
 import { TrendingSection } from '../components/TrendingSection'
 import { useAuth } from '../hooks/useAuth'
@@ -70,7 +71,7 @@ export const Landing = () => {
   ]
 
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="flex min-h-screen flex-col bg-black text-white">
       <Navbar />
 
       {/* Hero Section */}
@@ -248,6 +249,8 @@ export const Landing = () => {
           </div>
         </div>
       </div>
+
+      <Footer />
     </div>
   )
 }
