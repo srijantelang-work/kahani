@@ -21,3 +21,6 @@ in setting page only show
 
 Terms of Service
 Privacy Policy
+
+shift navabar to left side
+prompt page make it compact

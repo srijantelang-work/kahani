@@ -1,4 +1,5 @@
 import { GoogleBooksVolume } from '../config/api'
+import { useNavigate } from 'react-router-dom'
 
 interface BookCardProps {
   book: GoogleBooksVolume
@@ -6,6 +7,7 @@ interface BookCardProps {
 
 export const BookCard = ({ book }: BookCardProps) => {
   const { volumeInfo } = book
+  const navigate = useNavigate()
 
   // Improved image URL handling
   const getBookCoverUrl = () => {
@@ -28,8 +30,15 @@ export const BookCard = ({ book }: BookCardProps) => {
       .replace('&edge=curl', '') // Remove the curl effect
   }
 
+  const handleClick = () => {
+    navigate(`/books/${book.id}`)
+  }
+
   return (
-    <div className="flex flex-col overflow-hidden rounded-lg shadow transition hover:shadow-lg">
+    <div
+      onClick={handleClick}
+      className="flex cursor-pointer flex-col overflow-hidden rounded-lg shadow transition hover:shadow-lg"
+    >
       <div className="relative aspect-[3/4] bg-gray-200">
         <img
           src={getBookCoverUrl()}
@@ -42,7 +51,7 @@ export const BookCard = ({ book }: BookCardProps) => {
           }}
         />
       </div>
-      <div className="flex flex-1 flex-col justify-between p-4">
+      <div className="flex flex-1 flex-col p-4">
         <div className="flex-1">
           <h3 className="line-clamp-2 text-lg font-medium text-gray-900">
             {volumeInfo.title}

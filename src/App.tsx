@@ -18,6 +18,8 @@ import { Promptpage } from './pages/Promptpage'
 import { MovieDetail } from './pages/MovieDetail'
 import { PrivacyPolicy } from './pages/PrivacyPolicy'
 import { TermsOfService } from './pages/TermsOfService'
+import { Lists } from './pages/Lists'
+import { BookDetails } from './pages/BookDetails'
 
 interface ProtectedRouteProps {
   children: React.ReactNode
@@ -114,6 +116,16 @@ export const App = () => {
             }
           />
           <Route
+            path="/books/:id"
+            element={
+              <Layout>
+                <ProtectedRoute>
+                  <BookDetails />
+                </ProtectedRoute>
+              </Layout>
+            }
+          />
+          <Route
             path="/profile"
             element={
               <Layout>
@@ -147,6 +159,16 @@ export const App = () => {
             element={
               <Layout>
                 <TermsOfService />
+              </Layout>
+            }
+          />
+          <Route
+            path="/lists"
+            element={
+              <Layout>
+                <ProtectedRoute>
+                  <Lists />
+                </ProtectedRoute>
               </Layout>
             }
           />

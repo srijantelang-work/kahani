@@ -14,14 +14,10 @@ export const Promptpage = () => {
     state => state.addRecommendation
   )
 
-  const handleGenerate = async (currentPrompt: string, genres?: string[]) => {
+  const handleGenerate = async (currentPrompt: string) => {
     setRecommendations([])
     try {
-      const results = await generateRecommendations(
-        currentPrompt,
-        mediaType,
-        genres
-      )
+      const results = await generateRecommendations(currentPrompt, mediaType)
       setRecommendations(results)
 
       // Add to recent recommendations
@@ -29,22 +25,20 @@ export const Promptpage = () => {
         id: Date.now().toString(),
         prompt: currentPrompt.trim(),
         timestamp: new Date().toISOString(),
-        // Add results if you want to store them
       })
     } catch (err) {
       console.error('Error generating recommendations:', err)
-      // Handle error display in UI if needed
     }
   }
 
-  const handlePromptSubmit = (submittedPrompt: string, genres?: string[]) => {
+  const handlePromptSubmit = (submittedPrompt: string) => {
     setPrompt(submittedPrompt)
-    handleGenerate(submittedPrompt, genres)
+    handleGenerate(submittedPrompt)
   }
 
   return (
-    <div className="min-h-[calc(100vh-4rem)] bg-black py-12 text-white">
-      <Container className="flex flex-col items-center justify-center">
+    <div className="flex min-h-[calc(100vh-4rem)] items-center justify-center bg-black">
+      <Container className="mx-auto max-w-4xl px-4">
         <RecommendationPrompt
           initialPrompt={prompt}
           onPromptSubmit={handlePromptSubmit}

@@ -2,35 +2,60 @@ import { useState, useEffect } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useAuthStore } from '../../stores/authStore'
 import {
-  HomeIcon,
   UserCircleIcon,
   BookmarkIcon,
-  Cog8ToothIcon,
   ArrowLeftOnRectangleIcon,
   Bars3Icon,
   XMarkIcon,
+  FilmIcon,
+  TvIcon,
+  BookOpenIcon,
+  LightBulbIcon,
 } from '@heroicons/react/24/outline'
+import logoImage from '../../assets/icon.png'
 
 interface NavigationItem {
   name: string
   path: string
-  icon: typeof HomeIcon
+  icon: typeof UserCircleIcon
   requiresAuth: boolean
 }
 
 const navigation: NavigationItem[] = [
-  { name: 'Home', path: '/', icon: HomeIcon, requiresAuth: true },
+  {
+    name: 'Recommendations',
+    path: '/dashboard',
+    icon: LightBulbIcon,
+    requiresAuth: true,
+  },
+  {
+    name: 'Movies',
+    path: '/movies',
+    icon: FilmIcon,
+    requiresAuth: true,
+  },
+  {
+    name: 'TV Shows',
+    path: '/tv',
+    icon: TvIcon,
+    requiresAuth: true,
+  },
+  {
+    name: 'Books',
+    path: '/books',
+    icon: BookOpenIcon,
+    requiresAuth: true,
+  },
+  {
+    name: 'Lists',
+    path: '/lists',
+    icon: BookmarkIcon,
+    requiresAuth: true,
+  },
   {
     name: 'Profile',
     path: '/profile',
     icon: UserCircleIcon,
-    requiresAuth: true,
-  },
-  { name: 'Lists', path: '/lists', icon: BookmarkIcon, requiresAuth: true },
-  {
-    name: 'Settings',
-    path: '/settings',
-    icon: Cog8ToothIcon,
     requiresAuth: true,
   },
 ]
@@ -75,36 +100,42 @@ export const Navigation = () => {
       {/* Desktop Navigation */}
       <div className="hidden lg:fixed lg:inset-y-0 lg:flex lg:w-64 lg:flex-col">
         <div className="flex min-h-0 flex-1 flex-col border-r border-red-800 bg-black">
-          <div className="flex flex-1 flex-col overflow-y-auto pb-4 pt-5">
-            <div className="flex flex-shrink-0 items-center px-4">
-              <h1 className="text-xl font-bold text-red-600">Kahani</h1>
-            </div>
-            <nav className="mt-5 flex-1 space-y-1 bg-black px-2">
-              {navigation
-                .filter(item => !item.requiresAuth || user)
-                .map(item => (
-                  <Link
-                    key={item.name}
-                    to={item.path}
-                    className={`group flex items-center rounded-md px-2 py-2 text-sm font-medium ${
-                      isActive(item.path)
-                        ? 'bg-red-900 text-white'
-                        : 'text-gray-300 hover:bg-red-900/50 hover:text-white'
-                    }`}
-                  >
-                    <item.icon
-                      className={`mr-3 h-6 w-6 flex-shrink-0 ${
-                        isActive(item.path)
-                          ? 'text-red-500'
-                          : 'text-gray-400 group-hover:text-red-500'
-                      }`}
-                      aria-hidden="true"
-                    />
-                    {item.name}
-                  </Link>
-                ))}
-            </nav>
+          <div className="flex flex-shrink-0 items-center px-4 py-5">
+            <Link
+              to="/landing"
+              className="flex items-center space-x-3 hover:opacity-90"
+            >
+              <img src={logoImage} alt="Kahani Logo" className="h-8 w-8" />
+              <span className="text-2xl font-bold tracking-wider text-red-600">
+                KAHANI
+              </span>
+            </Link>
           </div>
+          <nav className="mt-5 flex-1 space-y-1 bg-black px-2">
+            {navigation
+              .filter(item => !item.requiresAuth || user)
+              .map(item => (
+                <Link
+                  key={item.name}
+                  to={item.path}
+                  className={`group flex items-center rounded-md px-2 py-2 text-sm font-medium ${
+                    isActive(item.path)
+                      ? 'bg-red-900 text-white'
+                      : 'text-gray-300 hover:bg-red-900/50 hover:text-white'
+                  }`}
+                >
+                  <item.icon
+                    className={`mr-3 h-6 w-6 flex-shrink-0 ${
+                      isActive(item.path)
+                        ? 'text-red-500'
+                        : 'text-gray-400 group-hover:text-red-500'
+                    }`}
+                    aria-hidden="true"
+                  />
+                  {item.name}
+                </Link>
+              ))}
+          </nav>
           <div className="flex flex-shrink-0 border-t border-red-800 p-4">
             <button
               onClick={handleSignOut}
@@ -123,8 +154,13 @@ export const Navigation = () => {
       {/* Mobile Navigation */}
       <div className="lg:hidden">
         <div className="fixed inset-x-0 top-0 z-40 border-b border-red-800 bg-black">
-          <div className="flex items-center justify-between px-4 py-2">
-            <h1 className="text-xl font-bold text-red-600">Kahani</h1>
+          <div className="flex items-center justify-between px-4 py-3">
+            <Link to="/landing" className="flex items-center space-x-3">
+              <img src={logoImage} alt="Kahani Logo" className="h-8 w-8" />
+              <span className="text-2xl font-bold tracking-wider text-red-600">
+                KAHANI
+              </span>
+            </Link>
             <button
               type="button"
               className="inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-red-900/50 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-red-500"
@@ -154,7 +190,16 @@ export const Navigation = () => {
           <div className="flex h-full flex-col">
             <div className="flex flex-1 flex-col overflow-y-auto pb-4 pt-5">
               <div className="flex flex-shrink-0 items-center px-4">
-                <h1 className="text-xl font-bold text-red-600">Kahani</h1>
+                <Link
+                  to="/landing"
+                  className="flex items-center space-x-2"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  <img src={logoImage} alt="Kahani Logo" className="h-8 w-8" />
+                  <span className="text-2xl font-bold tracking-wider text-red-600">
+                    KAHANI
+                  </span>
+                </Link>
               </div>
               <nav className="mt-5 flex-1 space-y-1 bg-black px-2">
                 {navigation

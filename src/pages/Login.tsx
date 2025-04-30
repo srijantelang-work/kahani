@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useAuthStore } from '../stores/authStore'
+import backgroundImage from '../assets/joshua-hanks-SiZ00cmFnsg-unsplash.jpg'
 
 export const Login = () => {
   const { signInWithGoogle, user } = useAuthStore()
@@ -15,17 +16,28 @@ export const Login = () => {
   }, [user, navigate, location])
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-gray-50 px-4 py-12 sm:px-6 lg:px-8">
-      <div className="w-full max-w-md space-y-8">
-        <div>
-          <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">
-            Sign in to your account
-          </h2>
-        </div>
-        <div className="mt-8 space-y-6">
+    <div
+      className="relative flex min-h-screen flex-col items-center justify-center"
+      style={{
+        backgroundImage: `url(${backgroundImage})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+      }}
+    >
+      {/* Overlay for better text contrast */}
+      <div className="absolute inset-0 bg-black/30"></div>
+
+      {/* Glass container */}
+      <div className="relative z-10 w-full max-w-md rounded-2xl border border-white/20 bg-white/10 p-8 shadow-xl backdrop-blur-md">
+        <div className="space-y-8">
+          <div>
+            <h2 className="text-center text-3xl font-bold tracking-tight text-white">
+              Login
+            </h2>
+          </div>
           <button
             onClick={() => signInWithGoogle()}
-            className="flex w-full items-center justify-center gap-3 rounded-md bg-white px-4 py-3 text-gray-500 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:outline-offset-0"
+            className="flex w-full items-center justify-center gap-3 rounded-xl bg-white/90 px-4 py-4 text-gray-600 shadow-lg transition-all hover:bg-white hover:shadow-xl focus:outline-none"
           >
             <svg className="h-5 w-5" viewBox="0 0 24 24">
               <path

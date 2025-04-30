@@ -66,10 +66,9 @@ export const MovieDetail = () => {
       <div className="container mx-auto px-4">
         <button
           onClick={() => navigate(-1)}
-          className="mb-6 flex items-center text-gray-300 hover:text-white"
+          className="mb-6 flex items-center rounded-md bg-black/50 p-2 text-gray-300 transition-colors hover:bg-black/75 hover:text-white"
         >
-          <ArrowLeftIcon className="mr-2 h-5 w-5" />
-          Back to Movies
+          <ArrowLeftIcon className="h-5 w-5" />
         </button>
 
         <div className="grid gap-8 lg:grid-cols-3">

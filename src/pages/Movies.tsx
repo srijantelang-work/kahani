@@ -3,7 +3,6 @@ import { useMovies, useSearchMovies } from '../hooks/useMovies'
 import { MovieCard } from '../components/MovieCard'
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline'
 import { TMDBMovie, TMDBResponse } from '../config/api'
-import { MediaTrendingSection } from '../components/MediaTrendingSection'
 
 export const Movies = () => {
   const [page, setPage] = useState(1)
@@ -41,15 +40,10 @@ export const Movies = () => {
 
   return (
     <div className="py-6">
-      <MediaTrendingSection
-        mediaType="movie"
-        title="Trending Movies"
-        subtitle="Discover the most popular movies right now"
-      />
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between">
-          <h1 className="text-2xl font-semibold text-gray-900">Movies</h1>
-          <div className="relative rounded-md shadow-sm">
+        <div className="mb-8 flex items-center justify-between">
+          <h1 className="text-3xl font-bold text-white">Movies</h1>
+          <div className="relative w-72">
             <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
               <MagnifyingGlassIcon
                 className="h-5 w-5 text-gray-400"
@@ -60,24 +54,26 @@ export const Movies = () => {
               type="text"
               value={searchQuery}
               onChange={e => handleSearch(e.target.value)}
-              className="block w-full rounded-md border-gray-300 pl-10 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+              className="block w-full rounded-md border border-gray-700 bg-gray-900 pl-10 text-sm text-white placeholder-gray-400 focus:border-red-500 focus:ring-red-500"
               placeholder="Search movies..."
             />
           </div>
         </div>
+      </div>
 
+      <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
         {isLoading ? (
-          <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {[...Array(8)].map((_, i) => (
               <div
                 key={i}
-                className="aspect-[2/3] animate-pulse rounded-lg bg-gray-200"
+                className="aspect-[2/3] animate-pulse rounded-lg bg-gray-800"
               />
             ))}
           </div>
         ) : (
           <>
-            <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
               {data?.results.map((movie: TMDBMovie) => (
                 <MovieCard key={movie.id} movie={movie} />
               ))}
@@ -88,17 +84,17 @@ export const Movies = () => {
                 <button
                   onClick={() => setPage(p => Math.max(1, p - 1))}
                   disabled={page === 1 || isFetching}
-                  className="rounded-md bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50"
+                  className="rounded-md bg-red-900/50 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-red-900/75 disabled:cursor-not-allowed disabled:opacity-50"
                 >
                   Previous
                 </button>
-                <span className="text-sm text-gray-500">
+                <span className="text-sm text-gray-400">
                   Page {page} of {data.total_pages}
                 </span>
                 <button
                   onClick={() => setPage(p => p + 1)}
                   disabled={page === data.total_pages || isFetching}
-                  className="rounded-md bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50"
+                  className="rounded-md bg-red-900/50 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-red-900/75 disabled:cursor-not-allowed disabled:opacity-50"
                 >
                   Next
                 </button>

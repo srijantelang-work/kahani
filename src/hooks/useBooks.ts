@@ -1,6 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import { booksClient } from '../lib/books-client'
-import { GoogleBooksResponse, GoogleBooksVolume } from '../config/api'
+import { apiClient } from '../lib/api-client'
 
 // Custom error type for better error handling
 export interface BookError {
@@ -34,52 +33,73 @@ const handleError = (error: any): BookError => {
   }
 }
 
-export const useSearchBooks = (query: string, startIndex: number = 0) => {
-  return useQuery<GoogleBooksResponse, BookError>({
-    queryKey: ['books', 'search', query, startIndex],
-    queryFn: async () => {
-      try {
-        if (isOffline()) {
-          throw new Error('offline')
-        }
+export interface GoogleBooksVolume {
+  id: string
+  volumeInfo: {
+    title: string
+    subtitle?: string
+    authors?: string[]
+    publisher?: string
+    publishedDate?: string
+    description?: string
+    pageCount?: number
+    imageLinks?: {
+      thumbnail?: string
+      smallThumbnail?: string
+    }
+    averageRating?: number
+    ratingsCount?: number
+    categories?: string[]
+  }
+}
 
-        const { data } = await booksClient.get<GoogleBooksResponse>(
-          '/volumes',
-          {
-            params: {
-              q: query,
-              startIndex,
-              maxResults: 12,
-            },
-          }
-        )
-        return data
-      } catch (error) {
-        throw handleError(error)
-      }
-    },
-    enabled: !!query,
-    gcTime: 24 * 60 * 60 * 1000, // Keep cache for 24 hours
-    staleTime: 5 * 60 * 1000, // Consider data fresh for 5 minutes
-    retry: (failureCount, error: BookError) => {
-      // Don't retry if we're offline or if it's a 404
-      if (error.isOffline || error.code === '404') return false
-      return failureCount < 3
-    },
-    // Show cached data when offline
-    select: data => {
-      if (isOffline()) {
-        // You might want to add a visual indicator that the data is from cache
-        return {
-          ...data,
-          items: data.items.map(item => ({
-            ...item,
-            fromCache: true,
-          })),
+interface GoogleBooksResponse {
+  items: GoogleBooksVolume[]
+  totalItems: number
+}
+
+export const useBooks = (page: number = 1) => {
+  return useQuery<GoogleBooksResponse>({
+    queryKey: ['books', page],
+    queryFn: async () => {
+      const startIndex = (page - 1) * 12
+      const { data } = await apiClient.get<GoogleBooksResponse>(
+        'https://www.googleapis.com/books/v1/volumes',
+        {
+          params: {
+            q: 'subject:fiction',
+            startIndex,
+            maxResults: 12,
+            key: import.meta.env.VITE_GOOGLE_BOOKS_API_KEY,
+          },
         }
-      }
+      )
       return data
     },
+    staleTime: 5 * 60 * 1000, // 5 minutes
+  })
+}
+
+export const useSearchBooks = (query: string, page: number = 1) => {
+  return useQuery<GoogleBooksResponse>({
+    queryKey: ['search-books', query, page],
+    queryFn: async () => {
+      const startIndex = (page - 1) * 12
+      const { data } = await apiClient.get<GoogleBooksResponse>(
+        'https://www.googleapis.com/books/v1/volumes',
+        {
+          params: {
+            q: query,
+            startIndex,
+            maxResults: 12,
+            key: import.meta.env.VITE_GOOGLE_BOOKS_API_KEY,
+          },
+        }
+      )
+      return data
+    },
+    enabled: !!query,
+    staleTime: 5 * 60 * 1000, // 5 minutes
   })
 }
 
@@ -92,8 +112,13 @@ export const useBookDetails = (bookId: string) => {
           throw new Error('offline')
         }
 
-        const { data } = await booksClient.get<GoogleBooksVolume>(
-          `/volumes/${bookId}`
+        const { data } = await apiClient.get<GoogleBooksVolume>(
+          `/volumes/${bookId}`,
+          {
+            params: {
+              key: import.meta.env.VITE_GOOGLE_BOOKS_API_KEY,
+            },
+          }
         )
         return data
       } catch (error) {
