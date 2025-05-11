@@ -10,8 +10,8 @@ export interface GoogleBook {
     publishedDate?: string
     description?: string
     imageLinks?: {
-      thumbnail: string
-      smallThumbnail: string
+      thumbnail?: string
+      smallThumbnail?: string
     }
     categories?: string[]
     averageRating?: number
