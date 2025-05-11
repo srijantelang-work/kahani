@@ -52,12 +52,17 @@ export const TVShowCard = ({ show }: TVShowCardProps) => {
 
   const backContent = (
     <div className="flex h-full flex-col bg-black p-4">
-      <h3 className="mb-2 line-clamp-2 text-lg font-medium text-white">
-        {show.name}
-      </h3>
-      <p className="mb-4 line-clamp-[12] text-sm text-gray-300">
-        {show.overview || 'No overview available.'}
-      </p>
+      <div className="mb-4 text-center">
+        <h3 className="text-xl font-medium text-white">{show.name}</h3>
+        <p className="mt-1 text-sm text-gray-400">
+          {new Date(show.first_air_date).getFullYear()}
+        </p>
+      </div>
+      <div className="flex flex-1 flex-col items-center justify-center px-2">
+        <p className="line-clamp-[12] text-center text-sm leading-relaxed text-gray-300">
+          {show.overview || 'No overview available.'}
+        </p>
+      </div>
       <div className="mt-auto space-y-2">
         <div className="flex items-center justify-between text-sm">
           <span className="text-gray-400">First Air Date:</span>

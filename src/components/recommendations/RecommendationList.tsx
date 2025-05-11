@@ -102,12 +102,14 @@ const RecommendationCard = ({
 
   const backContent = (
     <div className="flex h-full flex-col bg-black p-4">
-      <h3 className="mb-2 line-clamp-2 text-lg font-medium text-white">
+      <h3 className="mb-2 text-center text-lg font-medium text-white">
         {item.title} {item.year ? `(${item.year})` : ''}
       </h3>
-      <p className="mb-4 line-clamp-[12] text-sm text-gray-300">
-        {item.description}
-      </p>
+      <div className="flex flex-1 flex-col items-center justify-center">
+        <p className="mb-4 line-clamp-[12] text-center text-sm text-gray-300">
+          {item.description}
+        </p>
+      </div>
       <div className="mt-auto space-y-2">
         {item.genres && item.genres.length > 0 && (
           <div className="flex items-center justify-between text-sm">
@@ -147,13 +149,15 @@ const RecommendationCard = ({
             </span>
           </div>
         )}
-        {item.length > 0 && (
+        {item.length && (
           <div className="flex items-center justify-between text-sm">
             <span className="text-gray-400">Length:</span>
             <span className="font-medium text-white">
               {mediaType === 'movie'
                 ? `${item.length} min`
-                : `${item.length} pages`}
+                : mediaType === 'book'
+                  ? `${item.length} pages`
+                  : `${item.length} episodes`}
             </span>
           </div>
         )}
