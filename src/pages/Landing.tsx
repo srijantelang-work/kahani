@@ -63,12 +63,35 @@ const howItWorks = [
 export const Landing = () => {
   const { user } = useAuth()
   const [selectedPoster, setSelectedPoster] = useState<number | null>(null)
+  const [isFanned, setIsFanned] = useState(false)
 
   const posters = [
-    { id: 1, angle: -20, translateX: '-20%' },
-    { id: 2, angle: 0, translateX: '0%' },
-    { id: 3, angle: 20, translateX: '20%' },
+    {
+      id: 1,
+      angle: isFanned ? -20 : -5,
+      translateX: isFanned ? '-20%' : '-2%',
+    },
+    {
+      id: 2,
+      angle: 0,
+      translateX: '0%',
+    },
+    {
+      id: 3,
+      angle: isFanned ? 20 : 5,
+      translateX: isFanned ? '20%' : '2%',
+    },
   ]
+
+  const handlePosterClick = (id: number) => {
+    if (selectedPoster === id) {
+      setSelectedPoster(null)
+      setIsFanned(false)
+    } else {
+      setSelectedPoster(id)
+      setIsFanned(true)
+    }
+  }
 
   return (
     <div className="flex min-h-screen flex-col bg-black text-white">
@@ -80,17 +103,17 @@ export const Landing = () => {
           <div className="relative z-10 bg-black pb-8 sm:pb-16 md:pb-20 lg:w-full lg:max-w-2xl lg:pb-28 xl:pb-32">
             <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
               <div className="flex min-h-[calc(100vh-4rem)] flex-col justify-center sm:text-center lg:text-left">
-                <h1 className="text-6xl font-extrabold tracking-tight sm:text-7xl md:text-8xl">
+                <h1 className="text-4xl font-extrabold tracking-tight sm:text-6xl md:text-7xl lg:text-8xl">
                   <span className="block font-bold">Discover Your Next</span>{' '}
                   <span className="block text-red-600">
                     Favorite Show or Movie or Book
                   </span>
                 </h1>
-                <p className="mt-6 text-xl text-gray-300 sm:mx-auto sm:mt-8 sm:max-w-xl sm:text-2xl md:mt-8 md:text-2xl lg:mx-0">
+                <p className="mt-4 text-lg text-gray-300 sm:mt-6 sm:text-xl md:text-2xl lg:mx-0">
                   Kahani uses AI to provide personalized recommendations based
                   on your unique preferences and interests.
                 </p>
-                <div className="mt-10 flex flex-col space-y-3 sm:flex-row sm:space-x-4 sm:space-y-0">
+                <div className="mt-8 flex flex-col space-y-3 sm:mt-10 sm:flex-row sm:space-x-4 sm:space-y-0">
                   {user ? (
                     <Link
                       to="/dashboard"
@@ -122,15 +145,11 @@ export const Landing = () => {
         <div className="lg:absolute lg:inset-y-0 lg:right-0 lg:w-1/2">
           <div className="relative h-full w-full">
             <div className="absolute inset-0 flex items-center justify-center">
-              <div className="relative mt-16 h-[500px] w-[350px]">
+              <div className="relative mt-16 h-[350px] w-[250px] sm:h-[400px] sm:w-[300px] md:h-[450px] md:w-[325px] lg:h-[500px] lg:w-[350px]">
                 {posters.map(poster => (
                   <div
                     key={poster.id}
-                    onClick={() =>
-                      setSelectedPoster(
-                        selectedPoster === poster.id ? null : poster.id
-                      )
-                    }
+                    onClick={() => handlePosterClick(poster.id)}
                     className={`absolute left-1/2 top-1/2 aspect-[2/3] w-full cursor-pointer transition-all duration-500 ease-out
                       ${
                         selectedPoster === poster.id
@@ -141,11 +160,12 @@ export const Landing = () => {
                       }`}
                     style={{
                       transform: `translate(-50%, -50%) 
-                        translateX(${selectedPoster === null ? poster.translateX : '0%'})
-                        rotate(${selectedPoster === null ? poster.angle : 0}deg)
+                        translateX(${poster.translateX})
+                        rotate(${poster.angle}deg)
                         ${selectedPoster === poster.id ? 'translateZ(50px)' : ''}`,
                       zIndex:
                         selectedPoster === poster.id ? 30 : 20 - poster.id,
+                      transition: 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
                     }}
                   >
                     <img
