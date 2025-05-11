@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
-import { MediaItem, tmdb } from '../services/tmdb'
+import { MediaItem, tmdb, TVShow } from '../services/tmdb'
 import { MovieCard } from './MovieCard'
 import { TVShowCard } from './TVShowCard'
 import { BookCard } from './BookCard'
-import { GoogleBooksVolume } from '../config/api'
+import { GoogleBook, googleBooks } from '../services/google-books'
 
 interface MediaTrendingSectionProps {
   mediaType: 'movie' | 'tv' | 'book'
@@ -16,25 +16,35 @@ export const MediaTrendingSection = ({
   title,
   subtitle,
 }: MediaTrendingSectionProps) => {
-  const [trending, setTrending] = useState<MediaItem[] | GoogleBooksVolume[]>(
-    []
-  )
+  const [trending, setTrending] = useState<MediaItem[] | GoogleBook[]>([])
   const [isLoading, setIsLoading] = useState(true)
+  const [page, setPage] = useState(1)
+  const [totalPages, setTotalPages] = useState(1)
 
   useEffect(() => {
     const fetchTrending = async () => {
       try {
         setIsLoading(true)
-        if (mediaType === 'movie' || mediaType === 'tv') {
-          const data = await tmdb.getTrending(mediaType)
+        if (mediaType === 'movie') {
+          const data = await tmdb.getTrending('movie')
           setTrending(data)
+        } else if (mediaType === 'tv') {
+          const data = await tmdb.getPopularTVShows(page, {
+            minVoteCount: 100,
+            language: 'en-US',
+          })
+          setTrending(data.results)
+          setTotalPages(Math.min(data.total_pages, 500)) // TMDB caps at 500 pages
         } else if (mediaType === 'book') {
-          // For books, we'll use a predefined query for trending books
-          const response = await fetch(
-            `https://www.googleapis.com/books/v1/volumes?q=subject:fiction&orderBy=newest&maxResults=8`
-          )
-          const data = await response.json()
-          setTrending(data.items || [])
+          const data = await googleBooks.getPopularBooks({
+            startIndex: (page - 1) * 8,
+            maxResults: 8,
+            minRating: 4,
+            minRatingsCount: 100,
+            orderBy: 'relevance',
+          })
+          setTrending(data.items)
+          setTotalPages(Math.ceil(Math.min(data.totalItems, 1000) / 8)) // Limit to 1000 results
         }
       } catch (error) {
         console.error('Error fetching trending items:', error)
@@ -44,7 +54,12 @@ export const MediaTrendingSection = ({
     }
 
     fetchTrending()
-  }, [mediaType])
+  }, [mediaType, page])
+
+  const handlePageChange = (newPage: number) => {
+    setPage(newPage)
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
 
   return (
     <div className="bg-black py-12">
@@ -70,20 +85,44 @@ export const MediaTrendingSection = ({
             ))}
           </div>
         ) : (
-          <div className="mt-8 grid grid-cols-2 gap-8 sm:grid-cols-3 lg:grid-cols-4">
-            {mediaType === 'movie' &&
-              (trending as MediaItem[]).map(item => (
-                <MovieCard key={item.id} movie={item as any} />
-              ))}
-            {mediaType === 'tv' &&
-              (trending as MediaItem[]).map(item => (
-                <TVShowCard key={item.id} show={item as any} />
-              ))}
-            {mediaType === 'book' &&
-              (trending as GoogleBooksVolume[]).map(book => (
-                <BookCard key={book.id} book={book} />
-              ))}
-          </div>
+          <>
+            <div className="mt-8 grid grid-cols-2 gap-8 sm:grid-cols-3 lg:grid-cols-4">
+              {mediaType === 'movie' &&
+                (trending as MediaItem[]).map(item => (
+                  <MovieCard key={item.id} movie={item as any} />
+                ))}
+              {mediaType === 'tv' &&
+                (trending as TVShow[]).map(show => (
+                  <TVShowCard key={show.id} show={show} />
+                ))}
+              {mediaType === 'book' &&
+                (trending as GoogleBook[]).map(book => (
+                  <BookCard key={book.id} book={book} />
+                ))}
+            </div>
+
+            {totalPages > 1 && (
+              <div className="mt-8 flex items-center justify-center space-x-4">
+                <button
+                  onClick={() => handlePageChange(page - 1)}
+                  disabled={page === 1 || isLoading}
+                  className="rounded-md bg-red-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-50"
+                >
+                  Previous
+                </button>
+                <span className="text-sm text-gray-400">
+                  Page {page} of {totalPages}
+                </span>
+                <button
+                  onClick={() => handlePageChange(page + 1)}
+                  disabled={page === totalPages || isLoading}
+                  className="rounded-md bg-red-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-50"
+                >
+                  Next
+                </button>
+              </div>
+            )}
+          </>
         )}
       </div>
     </div>

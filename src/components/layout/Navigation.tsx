@@ -3,7 +3,6 @@ import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useAuthStore } from '../../stores/authStore'
 import {
   UserCircleIcon,
-  BookmarkIcon,
   ArrowLeftOnRectangleIcon,
   Bars3Icon,
   XMarkIcon,
@@ -44,12 +43,6 @@ const navigation: NavigationItem[] = [
     name: 'Books',
     path: '/books',
     icon: BookOpenIcon,
-    requiresAuth: true,
-  },
-  {
-    name: 'Lists',
-    path: '/lists',
-    icon: BookmarkIcon,
     requiresAuth: true,
   },
   {

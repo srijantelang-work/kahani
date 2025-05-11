@@ -20,6 +20,7 @@ import { PrivacyPolicy } from './pages/PrivacyPolicy'
 import { TermsOfService } from './pages/TermsOfService'
 import { Lists } from './pages/Lists'
 import { BookDetails } from './pages/BookDetails'
+import { BookDetail } from './pages/BookDetail'
 
 interface ProtectedRouteProps {
   children: React.ReactNode
@@ -121,6 +122,16 @@ export const App = () => {
               <Layout>
                 <ProtectedRoute>
                   <BookDetails />
+                </ProtectedRoute>
+              </Layout>
+            }
+          />
+          <Route
+            path="/book/:id"
+            element={
+              <Layout>
+                <ProtectedRoute>
+                  <BookDetail />
                 </ProtectedRoute>
               </Layout>
             }

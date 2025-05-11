@@ -1,21 +1,10 @@
 import { Link } from 'react-router-dom'
 import { getImageUrl } from '../config/api'
 import { FlipCard } from './common/FlipCard'
-
-interface TVShow {
-  id: number
-  name: string
-  overview: string
-  poster_path: string
-  first_air_date: string
-  vote_average: number
-  vote_count: number
-  original_language?: string
-  number_of_seasons?: number
-}
+import { TVShow as TMDBTVShow } from '../services/tmdb'
 
 interface TVShowCardProps {
-  show: TVShow
+  show: TMDBTVShow
 }
 
 export const TVShowCard = ({ show }: TVShowCardProps) => {
@@ -77,7 +66,7 @@ export const TVShowCard = ({ show }: TVShowCardProps) => {
               {show.vote_average.toFixed(1)}
             </span>
             <span className="ml-1 text-gray-400">
-              ({show.vote_count.toLocaleString()} votes)
+              ({show.vote_count?.toLocaleString() || 0} votes)
             </span>
           </div>
         </div>
@@ -86,14 +75,6 @@ export const TVShowCard = ({ show }: TVShowCardProps) => {
             <span className="text-gray-400">Language:</span>
             <span className="font-medium uppercase text-white">
               {show.original_language}
-            </span>
-          </div>
-        )}
-        {show.number_of_seasons && (
-          <div className="flex items-center justify-between text-sm">
-            <span className="text-gray-400">Seasons:</span>
-            <span className="font-medium text-white">
-              {show.number_of_seasons}
             </span>
           </div>
         )}

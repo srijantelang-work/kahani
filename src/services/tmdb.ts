@@ -24,6 +24,16 @@ export interface TVShow {
   overview?: string
   vote_count?: number
   original_language?: string
+  genre_ids?: number[]
+  popularity?: number
+  backdrop_path?: string
+}
+
+export interface TVShowsResponse {
+  page: number
+  results: TVShow[]
+  total_pages: number
+  total_results: number
 }
 
 export type MediaItem = Movie | TVShow
@@ -90,5 +100,27 @@ export const tmdb = {
       )
       return null
     }
+  },
+
+  getPopularTVShows: async (
+    page: number = 1,
+    options: {
+      minVoteCount?: number
+      language?: string
+      region?: string
+    } = {}
+  ) => {
+    const params = new URLSearchParams({
+      api_key: TMDB_API_KEY,
+      page: page.toString(),
+      sort_by: 'popularity.desc',
+      'vote_count.gte': (options.minVoteCount || 100).toString(),
+      language: options.language || 'en-US',
+      with_original_language: options.language?.split('-')[0] || 'en',
+    })
+
+    const response = await fetch(`${BASE_URL}/tv/popular?${params.toString()}`)
+    const data = await response.json()
+    return data as TVShowsResponse
   },
 }
