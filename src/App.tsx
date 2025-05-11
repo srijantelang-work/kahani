@@ -41,11 +41,11 @@ export const App = () => {
   return (
     <GeminiProvider
       apiKey={import.meta.env.VITE_GEMINI_API_KEY || ''}
-      model="gemini-1.5-pro-latest"
+      model="gemini-2.0-flash"
       temperature={0.7}
       maxOutputTokens={1024}
       retryAttempts={3}
-      retryDelay={1000}
+      retryDelay={2000}
     >
       <SearchProvider>
         <Routes>

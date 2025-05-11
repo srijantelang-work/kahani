@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 import { Container } from '../components/layout/Container'
 import { RecommendationPrompt } from '../components/recommendations/RecommendationPrompt'
 import { RecommendationList } from '../components/recommendations/RecommendationList'
@@ -9,32 +9,67 @@ export const Promptpage = () => {
   const [prompt, setPrompt] = useState('')
   const [recommendations, setRecommendations] = useState<any[]>([])
   const [mediaType, setMediaType] = useState<'movie' | 'tv' | 'book'>('movie')
-  const { generateRecommendations, loading, error } = useGeminiContext()
+  const [isGenerating, setIsGenerating] = useState(false)
+  const {
+    generateRecommendations,
+    loading: apiLoading,
+    error,
+  } = useGeminiContext()
   const addRecommendation = useRecommendationStore(
     state => state.addRecommendation
   )
 
-  const handleGenerate = async (currentPrompt: string) => {
-    setRecommendations([])
-    try {
-      const results = await generateRecommendations(currentPrompt, mediaType)
-      setRecommendations(results)
+  const handleGenerate = useCallback(
+    async (currentPrompt: string) => {
+      if (isGenerating) return // Prevent multiple simultaneous generations
 
-      // Add to recent recommendations
-      addRecommendation({
-        id: Date.now().toString(),
-        prompt: currentPrompt.trim(),
-        timestamp: new Date().toISOString(),
-      })
-    } catch (err) {
-      console.error('Error generating recommendations:', err)
-    }
-  }
+      setIsGenerating(true)
+      try {
+        const results = await generateRecommendations(currentPrompt, mediaType)
 
-  const handlePromptSubmit = (submittedPrompt: string) => {
-    setPrompt(submittedPrompt)
-    handleGenerate(submittedPrompt)
-  }
+        // Only update recommendations if we got valid results
+        if (Array.isArray(results) && results.length > 0) {
+          setRecommendations(results)
+
+          // Add to recent recommendations
+          addRecommendation({
+            id: Date.now().toString(),
+            prompt: currentPrompt.trim(),
+            timestamp: new Date().toISOString(),
+            mediaType,
+            results: results, // Store the actual results
+          })
+        } else {
+          console.warn('No valid recommendations received')
+        }
+      } catch (err) {
+        console.error('Error generating recommendations:', err)
+        setRecommendations([]) // Clear recommendations on error
+      } finally {
+        setIsGenerating(false)
+      }
+    },
+    [generateRecommendations, mediaType, addRecommendation, isGenerating]
+  )
+
+  const handlePromptSubmit = useCallback(
+    (submittedPrompt: string) => {
+      setPrompt(submittedPrompt)
+      handleGenerate(submittedPrompt)
+    },
+    [handleGenerate]
+  )
+
+  const handleMediaTypeChange = useCallback(
+    (newMediaType: 'movie' | 'tv' | 'book') => {
+      setMediaType(newMediaType)
+      if (prompt) {
+        // Regenerate recommendations when media type changes with existing prompt
+        handleGenerate(prompt)
+      }
+    },
+    [prompt, handleGenerate]
+  )
 
   return (
     <div className="flex min-h-[calc(100vh-4rem)] items-center justify-center bg-black">
@@ -43,23 +78,23 @@ export const Promptpage = () => {
           initialPrompt={prompt}
           onPromptSubmit={handlePromptSubmit}
           mediaType={mediaType}
-          onMediaTypeChange={setMediaType}
-          loading={loading}
+          onMediaTypeChange={handleMediaTypeChange}
+          loading={isGenerating || apiLoading}
         />
 
-        {loading && (
+        {(isGenerating || apiLoading) && (
           <div className="mt-12 flex w-full justify-center">
             <div className="h-10 w-10 animate-spin rounded-full border-4 border-red-600 border-t-transparent"></div>
           </div>
         )}
 
-        {error && (
+        {error && !isGenerating && (
           <div className="mt-12 w-full rounded-md bg-red-900/20 p-4 text-center">
             <p className="text-red-400">Error: {error.message}</p>
           </div>
         )}
 
-        {!loading && recommendations.length > 0 && (
+        {!isGenerating && !apiLoading && recommendations.length > 0 && (
           <RecommendationList
             recommendations={recommendations}
             mediaType={mediaType}

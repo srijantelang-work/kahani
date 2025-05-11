@@ -9,6 +9,9 @@ export interface Movie {
   vote_average: number
   release_date: string
   media_type: 'movie'
+  overview?: string
+  vote_count?: number
+  original_language?: string
 }
 
 export interface TVShow {
@@ -18,6 +21,9 @@ export interface TVShow {
   vote_average: number
   first_air_date: string
   media_type: 'tv'
+  overview?: string
+  vote_count?: number
+  original_language?: string
 }
 
 export type MediaItem = Movie | TVShow

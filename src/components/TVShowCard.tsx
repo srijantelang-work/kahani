@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { getImageUrl } from '../config/api'
+import { FlipCard } from './common/FlipCard'
 
 interface TVShow {
   id: number
@@ -9,6 +10,8 @@ interface TVShow {
   first_air_date: string
   vote_average: number
   vote_count: number
+  original_language?: string
+  number_of_seasons?: number
 }
 
 interface TVShowCardProps {
@@ -16,22 +19,19 @@ interface TVShowCardProps {
 }
 
 export const TVShowCard = ({ show }: TVShowCardProps) => {
-  return (
-    <Link
-      to={`/tv/${show.id}`}
-      className="group relative flex flex-col overflow-hidden rounded-lg bg-black shadow transition-transform hover:scale-105"
-    >
+  const frontContent = (
+    <div className="group relative flex h-full flex-col overflow-hidden rounded-lg bg-black shadow">
       <div className="aspect-[2/3] w-full overflow-hidden">
         <img
           src={getImageUrl(show.poster_path)}
           alt={show.name}
-          className="h-full w-full object-cover object-center"
+          className="h-full w-full object-cover object-center transition-transform duration-200 group-hover:scale-105"
           loading="lazy"
         />
       </div>
       <div className="flex flex-1 flex-col justify-between p-4">
         <div className="flex-1">
-          <h3 className="text-lg font-medium text-white group-hover:text-red-500">
+          <h3 className="line-clamp-2 text-lg font-medium text-white group-hover:text-red-500">
             {show.name}
           </h3>
           <p className="mt-1 text-sm text-gray-400">
@@ -47,6 +47,61 @@ export const TVShowCard = ({ show }: TVShowCardProps) => {
           </div>
         </div>
       </div>
+    </div>
+  )
+
+  const backContent = (
+    <div className="flex h-full flex-col bg-black p-4">
+      <h3 className="mb-2 line-clamp-2 text-lg font-medium text-white">
+        {show.name}
+      </h3>
+      <p className="mb-4 line-clamp-[12] text-sm text-gray-300">
+        {show.overview || 'No overview available.'}
+      </p>
+      <div className="mt-auto space-y-2">
+        <div className="flex items-center justify-between text-sm">
+          <span className="text-gray-400">First Air Date:</span>
+          <span className="font-medium text-white">
+            {new Date(show.first_air_date).toLocaleDateString()}
+          </span>
+        </div>
+        <div className="flex items-center justify-between text-sm">
+          <span className="text-gray-400">Rating:</span>
+          <div className="flex items-center">
+            <span className="font-medium text-white">
+              {show.vote_average.toFixed(1)}
+            </span>
+            <span className="ml-1 text-gray-400">
+              ({show.vote_count.toLocaleString()} votes)
+            </span>
+          </div>
+        </div>
+        {show.original_language && (
+          <div className="flex items-center justify-between text-sm">
+            <span className="text-gray-400">Language:</span>
+            <span className="font-medium uppercase text-white">
+              {show.original_language}
+            </span>
+          </div>
+        )}
+        {show.number_of_seasons && (
+          <div className="flex items-center justify-between text-sm">
+            <span className="text-gray-400">Seasons:</span>
+            <span className="font-medium text-white">
+              {show.number_of_seasons}
+            </span>
+          </div>
+        )}
+      </div>
+    </div>
+  )
+
+  return (
+    <Link
+      to={`/tv/${show.id}`}
+      className="block h-full min-h-[32rem] w-full transform transition-all duration-300 hover:z-10 hover:scale-105"
+    >
+      <FlipCard front={frontContent} back={backContent} />
     </Link>
   )
 }

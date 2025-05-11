@@ -1,5 +1,28 @@
 import { useEffect, useState } from 'react'
-import { MediaItem, tmdb } from '../services/tmdb'
+import { MediaItem, Movie, TVShow, tmdb } from '../services/tmdb'
+import { MovieCard, MovieCardData } from './MovieCard'
+import { TVShowCard } from './TVShowCard'
+import { Link } from 'react-router-dom'
+
+// Helper function to transform Movie to MovieCardData
+const transformToMovieCard = (item: Movie): MovieCardData => ({
+  id: item.id,
+  title: item.title,
+  overview: item.overview || '',
+  poster_path: item.poster_path,
+  release_date: item.release_date,
+  vote_average: item.vote_average,
+  vote_count: item.vote_count || 0,
+  original_language: item.original_language || 'en',
+})
+
+// Helper function to transform TVShow to extended TVShow type
+const transformToTVShow = (item: TVShow) => ({
+  ...item,
+  overview: item.overview || '',
+  vote_count: item.vote_count || 0,
+  original_language: item.original_language || 'en',
+})
 
 export const TrendingSection = () => {
   const [trending, setTrending] = useState<MediaItem[]>([])
@@ -7,9 +30,14 @@ export const TrendingSection = () => {
 
   useEffect(() => {
     const fetchTrending = async () => {
-      const data = await tmdb.getTrending()
-      setTrending(data)
-      setIsLoading(false)
+      try {
+        const data = await tmdb.getTrending()
+        setTrending(data)
+      } catch (error) {
+        console.error('Error fetching trending items:', error)
+      } finally {
+        setIsLoading(false)
+      }
     }
 
     fetchTrending()
@@ -27,7 +55,7 @@ export const TrendingSection = () => {
           </p>
         </div>
 
-        <div className="mt-20">
+        <div className="mt-12">
           {isLoading ? (
             <div className="grid grid-cols-2 gap-8 sm:grid-cols-3 lg:grid-cols-4">
               {[...Array(8)].map((_, i) => (
@@ -40,32 +68,32 @@ export const TrendingSection = () => {
             </div>
           ) : (
             <div className="grid grid-cols-2 gap-8 sm:grid-cols-3 lg:grid-cols-4">
-              {trending.slice(0, 8).map(item => (
-                <div key={item.id} className="group relative">
-                  <div className="aspect-[2/3] overflow-hidden rounded-lg">
-                    <img
-                      src={tmdb.getImageUrl(item.poster_path)}
-                      alt={item.media_type === 'movie' ? item.title : item.name}
-                      className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+              {trending
+                .slice(0, 8)
+                .map(item =>
+                  item.media_type === 'movie' ? (
+                    <MovieCard
+                      key={item.id}
+                      movie={transformToMovieCard(item as Movie)}
                     />
-                  </div>
-                  <div className="mt-4">
-                    <h3 className="text-lg font-medium text-white">
-                      {item.media_type === 'movie' ? item.title : item.name}
-                    </h3>
-                    <p className="mt-1 text-sm text-gray-400">
-                      {item.media_type === 'movie'
-                        ? new Date(item.release_date).getFullYear()
-                        : new Date(item.first_air_date).getFullYear()}
-                      {' · '}
-                      <span className="text-yellow-400">★</span>{' '}
-                      {item.vote_average.toFixed(1)}
-                    </p>
-                  </div>
-                </div>
-              ))}
+                  ) : (
+                    <TVShowCard
+                      key={item.id}
+                      show={transformToTVShow(item as TVShow)}
+                    />
+                  )
+                )}
             </div>
           )}
+        </div>
+
+        <div className="mt-12 text-center">
+          <Link
+            to="/movies"
+            className="inline-flex items-center rounded-md bg-red-600 px-6 py-3 text-base font-medium text-white shadow-sm transition-colors hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+          >
+            Explore All Movies & Shows
+          </Link>
         </div>
       </div>
     </div>

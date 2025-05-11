@@ -22,6 +22,7 @@ export interface TMDBMovie {
     logo_path: string | null
     origin_country: string
   }>
+  original_language: string
 }
 
 export interface TMDBResponse<T> {
