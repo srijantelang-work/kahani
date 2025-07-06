@@ -21,6 +21,7 @@ import { TermsOfService } from './pages/TermsOfService'
 import { Lists } from './pages/Lists'
 import { BookDetails } from './pages/BookDetails'
 import { BookDetail } from './pages/BookDetail'
+import { History } from './pages/History'
 
 interface ProtectedRouteProps {
   children: React.ReactNode
@@ -62,6 +63,16 @@ export const App = () => {
               <Layout>
                 <ProtectedRoute>
                   <Promptpage />
+                </ProtectedRoute>
+              </Layout>
+            }
+          />
+          <Route
+            path="/history"
+            element={
+              <Layout>
+                <ProtectedRoute>
+                  <History />
                 </ProtectedRoute>
               </Layout>
             }

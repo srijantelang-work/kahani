@@ -1,4 +1,4 @@
-import { cn } from '@/lib/utils'
+import { cn } from '../../lib/utils'
 import { Navigation } from './Navigation'
 import { Container } from './Container'
 
@@ -14,16 +14,22 @@ export function PageLayout({
   fullWidth = false,
 }: PageLayoutProps) {
   return (
-    <div className="min-h-screen bg-black text-white">
-      <Navigation />
-      <main
-        className={cn(
-          'pt-16', // Account for fixed navigation
-          className
-        )}
-      >
-        {fullWidth ? children : <Container>{children}</Container>}
-      </main>
+    <div className="relative min-h-screen">
+      {/* Animated background */}
+      <div className="liquid-glass-bg" />
+
+      {/* Content wrapper with glass effect */}
+      <div className="content-overlay">
+        <Navigation />
+        <main
+          className={cn(
+            'relative z-10 pt-16', // Account for fixed navigation and ensure content is above background
+            className
+          )}
+        >
+          {fullWidth ? children : <Container>{children}</Container>}
+        </main>
+      </div>
     </div>
   )
 }

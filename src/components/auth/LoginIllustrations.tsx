@@ -16,7 +16,7 @@ export const LoginIllustrations = () => {
             <br />
             YOUR STORY.
             <br />
-            KAHANI
+            <span className="kahani-brand">KAHANI</span>
           </h1>
           <p className="mt-4 max-w-md font-body text-xl text-gray-200">
             Discover Your Next Favorite Show or Movie or Book

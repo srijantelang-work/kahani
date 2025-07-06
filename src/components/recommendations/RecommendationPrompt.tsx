@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 interface RecommendationPromptProps {
   initialPrompt?: string
@@ -17,6 +17,13 @@ export const RecommendationPrompt = ({
 }: RecommendationPromptProps) => {
   const [prompt, setPrompt] = useState(initialPrompt)
 
+  // Update prompt when initialPrompt changes (from URL)
+  useEffect(() => {
+    if (initialPrompt) {
+      setPrompt(initialPrompt)
+    }
+  }, [initialPrompt])
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     if (prompt.trim()) {
@@ -28,40 +35,43 @@ export const RecommendationPrompt = ({
 
   return (
     <div className="flex w-full flex-col items-center justify-center text-center">
-      <h1 className="font-poppins text-4xl font-bold tracking-tight text-white md:text-5xl lg:text-6xl">
+      <h1 className="heading-futuristic bg-gradient-to-r from-red-500 via-red-600 to-red-700 bg-clip-text text-5xl font-extrabold text-transparent md:text-6xl lg:text-7xl">
         WHAT ARE YOU IN THE MOOD FOR TODAY?
       </h1>
-      <p className="mt-4 text-xl text-gray-400">
+      <p className="text-elegant mt-6 text-xl text-gray-300 md:text-2xl">
         Describe a vibe, a genre, or a feeling
       </p>
 
-      <form onSubmit={handleSubmit} className="mt-8 w-full max-w-2xl space-y-6">
+      <form
+        onSubmit={handleSubmit}
+        className="mt-12 w-full max-w-2xl space-y-8"
+      >
         <div className="relative">
           <textarea
             rows={3}
             value={prompt}
             onChange={e => setPrompt(e.target.value)}
             placeholder={`What kind of ${mediaType} are you looking for?`}
-            className="w-full resize-none rounded-xl border border-gray-700 bg-gray-950 px-4 py-3 pr-32 text-white placeholder-gray-500 focus:border-red-500 focus:outline-none focus:ring-2 focus:ring-red-500/50"
+            className="text-modern w-full resize-none rounded-xl border border-gray-700 bg-gray-950/80 px-6 py-4 pr-32 text-lg text-white placeholder-gray-500 focus:border-red-500 focus:outline-none focus:ring-2 focus:ring-red-500/50"
           />
           <button
             type="submit"
             disabled={loading || !prompt.trim()}
-            className="absolute bottom-3 right-3 rounded-lg bg-gradient-to-r from-red-600 to-red-800 px-4 py-2 text-sm font-medium text-white shadow-lg transition hover:scale-105 disabled:cursor-not-allowed disabled:opacity-50"
+            className="heading-futuristic absolute bottom-3 right-3 rounded-lg bg-gradient-to-r from-red-600 to-red-800 px-6 py-2.5 text-base font-bold text-white shadow-lg transition hover:scale-105 disabled:cursor-not-allowed disabled:opacity-50"
           >
             {loading ? 'Generating...' : 'Generate'}
           </button>
         </div>
 
-        <div className="flex justify-center gap-4">
+        <div className="flex justify-center gap-6">
           {mediaTypes.map(type => (
             <button
               key={type}
               type="button"
               onClick={() => onMediaTypeChange(type)}
-              className={`rounded-full px-5 py-1.5 text-sm font-medium transition ${
+              className={`text-modern rounded-full px-6 py-2 text-base font-bold tracking-wide transition ${
                 mediaType === type
-                  ? 'bg-red-600 text-white shadow-md'
+                  ? 'bg-gradient-to-r from-red-600 to-red-800 text-white shadow-md'
                   : 'text-gray-400 hover:text-red-500'
               }`}
             >

@@ -26,6 +26,7 @@ interface RecommendationState {
   addRecommendation: (
     recommendation: Omit<Recommendation, 'id'> & { id?: string }
   ) => void
+  deleteRecommendation: (id: string) => void
   clearRecommendations: () => void
   getRecommendationById: (id: string) => Recommendation | undefined
 }
@@ -54,6 +55,14 @@ export const useRecommendationStore = create<RecommendationState>()(
             ].slice(0, 10), // Keep only the 10 most recent recommendations
           }
         })
+      },
+
+      deleteRecommendation: (id: string) => {
+        set(state => ({
+          recentRecommendations: state.recentRecommendations.filter(
+            rec => rec.id !== id
+          ),
+        }))
       },
 
       clearRecommendations: () => set({ recentRecommendations: [] }),

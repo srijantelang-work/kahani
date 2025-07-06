@@ -4,16 +4,19 @@ import { GoogleBook } from '../services/google-books'
 
 interface BookCardProps {
   book: GoogleBook
+  glass?: boolean
 }
 
-export const BookCard = ({ book }: BookCardProps) => {
+export const BookCard = ({ book, glass = true }: BookCardProps) => {
   const { volumeInfo } = book
   const imageUrl =
     volumeInfo.imageLinks?.thumbnail ||
     'https://via.placeholder.com/500x750?text=No+Cover'
 
   const frontContent = (
-    <div className="group relative flex h-full flex-col overflow-hidden rounded-lg bg-black shadow">
+    <div
+      className={`group relative flex h-full flex-col overflow-hidden rounded-lg ${glass ? 'bg-transparent backdrop-blur-sm' : 'bg-black'} shadow`}
+    >
       <div className="aspect-[2/3] w-full overflow-hidden">
         <img
           src={imageUrl}
@@ -24,8 +27,11 @@ export const BookCard = ({ book }: BookCardProps) => {
       </div>
       <div className="flex flex-1 flex-col justify-between p-4">
         <div className="flex-1">
-          <h3 className="line-clamp-2 text-lg font-medium text-white group-hover:text-red-500">
+          <h3
+            className={`line-clamp-2 text-lg font-medium ${glass ? 'liquid-glass-text' : 'text-white'} group-hover:text-red-500`}
+          >
             {volumeInfo.title}
+            {glass && <span className="shine-text"></span>}
           </h3>
           <p className="mt-1 text-sm text-gray-400">
             {volumeInfo.authors?.[0] || 'Unknown Author'}
@@ -46,9 +52,16 @@ export const BookCard = ({ book }: BookCardProps) => {
   )
 
   const backContent = (
-    <div className="flex h-full flex-col bg-black p-4">
+    <div
+      className={`flex h-full flex-col ${glass ? 'border border-white/10 bg-transparent backdrop-blur-sm' : 'bg-black'} p-4`}
+    >
       <div className="mb-4 text-center">
-        <h3 className="text-xl font-medium text-white">{volumeInfo.title}</h3>
+        <h3
+          className={`text-xl font-medium ${glass ? 'liquid-glass-text' : 'text-white'}`}
+        >
+          {volumeInfo.title}
+          {glass && <span className="shine-text"></span>}
+        </h3>
         <p className="mt-1 text-sm text-gray-400">
           {volumeInfo.authors?.join(', ') || 'Unknown Author'}
         </p>
@@ -97,7 +110,7 @@ export const BookCard = ({ book }: BookCardProps) => {
       to={`/book/${book.id}`}
       className="block h-full min-h-[32rem] w-full transform transition-all duration-300 hover:z-10 hover:scale-105"
     >
-      <FlipCard front={frontContent} back={backContent} />
+      <FlipCard front={frontContent} back={backContent} glass={glass} />
     </Link>
   )
 }

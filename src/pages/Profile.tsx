@@ -1,6 +1,7 @@
 import { useAuth } from '../hooks/useAuth'
 import { useProfile } from '../hooks/useProfile'
 import { UserCircleIcon } from '@heroicons/react/24/outline'
+import { PageHeader } from '../components/layout/PageHeader'
 
 export const Profile = () => {
   const { user } = useAuth()
@@ -15,12 +16,19 @@ export const Profile = () => {
   }
 
   return (
-    <div className="min-h-screen bg-black py-8">
-      <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
-        <h1 className="text-3xl font-bold text-white">Profile</h1>
+    <>
+      <PageHeader
+        title="Profile"
+        description={
+          user?.displayName
+            ? `Welcome back, ${user.displayName}`
+            : 'Manage your account'
+        }
+      />
 
+      <div className="mx-auto max-w-3xl px-4 py-8 sm:px-6 lg:px-8">
         {/* Profile Card */}
-        <div className="mt-8 overflow-hidden rounded-lg border border-red-800 bg-gray-900/50 shadow-xl">
+        <div className="liquid-glass-card overflow-hidden rounded-lg border border-red-800/30 bg-gray-900/20 shadow-xl backdrop-blur-sm">
           {/* Header Section */}
           <div className="px-6 py-8">
             <div className="flex items-center">
@@ -28,16 +36,17 @@ export const Profile = () => {
                 <img
                   src={user.photoURL}
                   alt={user.displayName || 'Profile'}
-                  className="h-20 w-20 rounded-full object-cover"
+                  className="h-20 w-20 rounded-full object-cover ring-2 ring-red-500/30 ring-offset-2 ring-offset-black/50"
                 />
               ) : (
-                <div className="flex h-20 w-20 items-center justify-center rounded-full bg-red-600/10">
+                <div className="glass-effect flex h-20 w-20 items-center justify-center rounded-full bg-red-600/10">
                   <UserCircleIcon className="h-12 w-12 text-red-500" />
                 </div>
               )}
               <div className="ml-6">
-                <h2 className="text-2xl font-semibold text-white">
+                <h2 className="liquid-glass-text text-2xl font-semibold">
                   {user?.displayName || 'User'}
+                  <span className="shine-text"></span>
                 </h2>
                 <p className="mt-1 text-gray-400">{user?.email}</p>
               </div>
@@ -45,8 +54,8 @@ export const Profile = () => {
           </div>
 
           {/* User Information */}
-          <div className="border-t border-red-800/30 bg-black/30">
-            <dl className="divide-y divide-red-800/30">
+          <div className="border-t border-red-800/30 bg-black/20 backdrop-blur-sm">
+            <dl className="divide-y divide-red-800/20">
               <div className="px-6 py-4">
                 <dt className="text-sm font-medium text-gray-400">User ID</dt>
                 <dd className="mt-1 text-sm text-gray-300">{user?.id}</dd>
@@ -85,18 +94,19 @@ export const Profile = () => {
           </div>
 
           {/* Actions */}
-          <div className="border-t border-red-800/30 bg-black/30 px-6 py-4">
+          <div className="border-t border-red-800/30 bg-black/20 px-6 py-4 backdrop-blur-sm">
             <div className="flex justify-end space-x-4">
               <button
                 onClick={() => (window.location.href = '/settings')}
-                className="rounded-md bg-red-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:ring-offset-gray-900"
+                className="liquid-glass-button relative rounded-md px-4 py-2 text-sm font-medium text-white shadow-sm transition-all before:bg-red-600/90 hover:before:bg-red-700/90 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:ring-offset-gray-900"
               >
-                Edit Profile
+                <span className="shine"></span>
+                <span className="relative z-10">Edit Profile</span>
               </button>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   )
 }

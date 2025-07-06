@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { BookCard } from '../components/BookCard'
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline'
 import { useBooks, useSearchBooks } from '../hooks/useBooks'
+import { PageHeader } from '../components/layout/PageHeader'
 
 export const Books = () => {
   const [page, setPage] = useState(1)
@@ -35,28 +36,31 @@ export const Books = () => {
   const isLoading = searchQuery ? isSearchLoading : isBooksLoading
   const isFetching = searchQuery ? isSearchFetching : isBooksFetching
 
-  return (
-    <div className="py-6">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="mb-8 flex items-center justify-between">
-          <h1 className="text-3xl font-bold text-white">Books</h1>
-          <div className="relative w-72">
-            <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-              <MagnifyingGlassIcon
-                className="h-5 w-5 text-gray-400"
-                aria-hidden="true"
-              />
-            </div>
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={e => handleSearch(e.target.value)}
-              className="block w-full rounded-md border border-gray-700 bg-gray-900 pl-10 text-sm text-white placeholder-gray-400 focus:border-red-500 focus:ring-red-500"
-              placeholder="Search books..."
-            />
-          </div>
-        </div>
+  const searchInput = (
+    <div className="relative w-72">
+      <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+        <MagnifyingGlassIcon
+          className="h-5 w-5 text-gray-400"
+          aria-hidden="true"
+        />
       </div>
+      <input
+        type="text"
+        value={searchQuery}
+        onChange={e => handleSearch(e.target.value)}
+        className="liquid-glass-input block w-full rounded-md border border-gray-700 bg-transparent pl-10 text-sm text-white placeholder-gray-400 focus:border-red-500 focus:ring-red-500"
+        placeholder="Search books..."
+      />
+    </div>
+  )
+
+  return (
+    <>
+      <PageHeader
+        title="Books"
+        description="Find your next great read"
+        rightContent={searchInput}
+      />
 
       <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
         {isLoading ? (
@@ -79,23 +83,25 @@ export const Books = () => {
                 <button
                   onClick={() => setPage(p => Math.max(1, p - 1))}
                   disabled={page === 1 || isFetching}
-                  className="rounded-md bg-red-900/50 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-red-900/75 disabled:cursor-not-allowed disabled:opacity-50"
+                  className="liquid-glass-button relative rounded-md px-4 py-2 text-sm font-medium text-white transition-colors before:bg-red-900/50 hover:before:bg-red-900/75 disabled:cursor-not-allowed disabled:opacity-50"
                 >
-                  Previous
+                  <span className="shine"></span>
+                  <span className="relative z-10">Previous</span>
                 </button>
                 <span className="text-sm text-gray-400">Page {page}</span>
                 <button
                   onClick={() => setPage(p => p + 1)}
                   disabled={isFetching}
-                  className="rounded-md bg-red-900/50 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-red-900/75 disabled:cursor-not-allowed disabled:opacity-50"
+                  className="liquid-glass-button relative rounded-md px-4 py-2 text-sm font-medium text-white transition-colors before:bg-red-900/50 hover:before:bg-red-900/75 disabled:cursor-not-allowed disabled:opacity-50"
                 >
-                  Next
+                  <span className="shine"></span>
+                  <span className="relative z-10">Next</span>
                 </button>
               </div>
             )}
           </>
         )}
       </div>
-    </div>
+    </>
   )
 }

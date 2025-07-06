@@ -10,6 +10,7 @@ import {
   TvIcon,
   BookOpenIcon,
   LightBulbIcon,
+  ClockIcon,
 } from '@heroicons/react/24/outline'
 import logoImage from '../../assets/icon.png'
 
@@ -25,6 +26,12 @@ const navigation: NavigationItem[] = [
     name: 'Recommendations',
     path: '/dashboard',
     icon: LightBulbIcon,
+    requiresAuth: true,
+  },
+  {
+    name: 'History',
+    path: '/history',
+    icon: ClockIcon,
     requiresAuth: true,
   },
   {
@@ -99,7 +106,7 @@ export const Navigation = () => {
               className="flex items-center space-x-3 hover:opacity-90"
             >
               <img src={logoImage} alt="Kahani Logo" className="h-8 w-8" />
-              <span className="text-2xl font-bold tracking-wider text-red-600">
+              <span className="kahani-brand text-2xl tracking-wider text-red-600">
                 KAHANI
               </span>
             </Link>
@@ -150,7 +157,7 @@ export const Navigation = () => {
           <div className="flex items-center justify-between px-4 py-3">
             <Link to="/landing" className="flex items-center space-x-3">
               <img src={logoImage} alt="Kahani Logo" className="h-8 w-8" />
-              <span className="text-2xl font-bold tracking-wider text-red-600">
+              <span className="kahani-brand text-2xl tracking-wider text-red-600">
                 KAHANI
               </span>
             </Link>
@@ -189,7 +196,7 @@ export const Navigation = () => {
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   <img src={logoImage} alt="Kahani Logo" className="h-8 w-8" />
-                  <span className="text-2xl font-bold tracking-wider text-red-600">
+                  <span className="kahani-brand text-2xl tracking-wider text-red-600">
                     KAHANI
                   </span>
                 </Link>

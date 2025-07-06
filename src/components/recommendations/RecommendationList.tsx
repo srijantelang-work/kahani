@@ -78,7 +78,10 @@ const RecommendationCard = ({
           )}
           {item.reason && (
             <div className="flex-1">
-              <p className="line-clamp-4 text-sm italic text-gray-400">
+              <h4 className="mb-2 text-sm font-medium text-red-400">
+                Why we recommend this:
+              </h4>
+              <p className="line-clamp-3 text-sm leading-relaxed text-gray-300">
                 {item.reason}
               </p>
             </div>

@@ -17,15 +17,18 @@ export interface TrendingItem {
 
 interface TrendingCardProps {
   item: TrendingItem
+  glass?: boolean
 }
 
-export const TrendingCard = ({ item }: TrendingCardProps) => {
+export const TrendingCard = ({ item, glass = true }: TrendingCardProps) => {
   const isTV = item.media_type === 'tv'
   const title = isTV ? item.name : item.title
   const date = isTV ? item.first_air_date : item.release_date
 
   const frontContent = (
-    <div className="group relative flex h-full flex-col overflow-hidden rounded-lg bg-black shadow">
+    <div
+      className={`group relative flex h-full flex-col overflow-hidden rounded-lg ${glass ? 'bg-transparent backdrop-blur-sm' : 'bg-black'} shadow`}
+    >
       <div className="aspect-[2/3] w-full overflow-hidden">
         <img
           src={getImageUrl(item.poster_path)}
@@ -41,8 +44,11 @@ export const TrendingCard = ({ item }: TrendingCardProps) => {
               {item.media_type}
             </span>
           </div>
-          <h3 className="line-clamp-2 text-lg font-medium text-white group-hover:text-red-500">
+          <h3
+            className={`line-clamp-2 text-lg font-medium ${glass ? 'liquid-glass-text' : 'text-white'} group-hover:text-red-500`}
+          >
             {title}
+            {glass && <span className="shine-text"></span>}
           </h3>
           <p className="mt-1 text-sm text-gray-400">
             {date ? new Date(date).getFullYear() : 'TBA'}
@@ -61,12 +67,19 @@ export const TrendingCard = ({ item }: TrendingCardProps) => {
   )
 
   const backContent = (
-    <div className="flex h-full flex-col bg-black p-4">
+    <div
+      className={`flex h-full flex-col ${glass ? 'border border-white/10 bg-transparent backdrop-blur-sm' : 'bg-black'} p-4`}
+    >
       <div className="mb-4 text-center">
         <span className="mb-2 inline-block rounded-full bg-red-900/50 px-2 py-0.5 text-xs font-medium uppercase text-red-200">
           {item.media_type}
         </span>
-        <h3 className="text-xl font-medium text-white">{title}</h3>
+        <h3
+          className={`text-xl font-medium ${glass ? 'liquid-glass-text' : 'text-white'}`}
+        >
+          {title}
+          {glass && <span className="shine-text"></span>}
+        </h3>
         <p className="mt-1 text-sm text-gray-400">
           {date ? new Date(date).getFullYear() : 'TBA'}
         </p>
@@ -111,7 +124,7 @@ export const TrendingCard = ({ item }: TrendingCardProps) => {
       to={`/${item.media_type}/${item.id}`}
       className="block h-full min-h-[32rem] w-full transform transition-all duration-300 hover:z-10 hover:scale-105"
     >
-      <FlipCard front={frontContent} back={backContent} />
+      <FlipCard front={frontContent} back={backContent} glass={glass} />
     </Link>
   )
 }

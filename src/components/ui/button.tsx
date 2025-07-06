@@ -19,6 +19,7 @@ const buttonVariants = cva(
         ghost: 'hover:bg-accent hover:text-accent-foreground',
         link: 'text-primary underline-offset-4 hover:underline',
         netflix: 'bg-accent text-white hover:bg-accent/90',
+        glass: 'bg-transparent text-white border border-white/10',
       },
       size: {
         default: 'h-9 px-4 py-2',
@@ -26,10 +27,15 @@ const buttonVariants = cva(
         lg: 'h-10 rounded-md px-8',
         icon: 'h-9 w-9',
       },
+      glass: {
+        true: 'liquid-glass-button',
+        false: '',
+      },
     },
     defaultVariants: {
       variant: 'default',
       size: 'default',
+      glass: false,
     },
   }
 )
@@ -38,17 +44,30 @@ export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
   asChild?: boolean
+  glass?: boolean
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, asChild = false, ...props }, ref) => {
+  (
+    { className, variant, size, glass, asChild = false, children, ...props },
+    ref
+  ) => {
     const Comp = asChild ? Slot : 'button'
     return (
       <Comp
-        className={cn(buttonVariants({ variant, size, className }))}
+        className={cn(buttonVariants({ variant, size, glass, className }))}
         ref={ref}
         {...props}
-      />
+      >
+        {glass ? (
+          <>
+            <span className="shine" />
+            {children}
+          </>
+        ) : (
+          children
+        )}
+      </Comp>
     )
   }
 )

@@ -3,6 +3,7 @@ import { useMovies, useSearchMovies } from '../hooks/useMovies'
 import { MovieCard } from '../components/MovieCard'
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline'
 import { TMDBMovie, TMDBResponse } from '../config/api'
+import { PageHeader } from '../components/layout/PageHeader'
 
 export const Movies = () => {
   const [page, setPage] = useState(1)
@@ -38,28 +39,31 @@ export const Movies = () => {
   const isLoading = searchQuery ? isSearchLoading : isMoviesLoading
   const isFetching = searchQuery ? isSearchFetching : isMoviesFetching
 
-  return (
-    <div className="py-6">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="mb-8 flex items-center justify-between">
-          <h1 className="text-3xl font-bold text-white">Movies</h1>
-          <div className="relative w-72">
-            <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-              <MagnifyingGlassIcon
-                className="h-5 w-5 text-gray-400"
-                aria-hidden="true"
-              />
-            </div>
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={e => handleSearch(e.target.value)}
-              className="block w-full rounded-md border border-gray-700 bg-gray-900 pl-10 text-sm text-white placeholder-gray-400 focus:border-red-500 focus:ring-red-500"
-              placeholder="Search movies..."
-            />
-          </div>
-        </div>
+  const searchInput = (
+    <div className="relative w-72">
+      <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+        <MagnifyingGlassIcon
+          className="h-5 w-5 text-gray-400"
+          aria-hidden="true"
+        />
       </div>
+      <input
+        type="text"
+        value={searchQuery}
+        onChange={e => handleSearch(e.target.value)}
+        className="liquid-glass-input block w-full rounded-md border border-gray-700 bg-transparent pl-10 text-sm text-white placeholder-gray-400 focus:border-red-500 focus:ring-red-500"
+        placeholder="Search movies..."
+      />
+    </div>
+  )
+
+  return (
+    <>
+      <PageHeader
+        title="Movies"
+        description="Discover popular and trending films"
+        rightContent={searchInput}
+      />
 
       <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
         {isLoading ? (
@@ -84,9 +88,10 @@ export const Movies = () => {
                 <button
                   onClick={() => setPage(p => Math.max(1, p - 1))}
                   disabled={page === 1 || isFetching}
-                  className="rounded-md bg-red-900/50 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-red-900/75 disabled:cursor-not-allowed disabled:opacity-50"
+                  className="liquid-glass-button relative rounded-md px-4 py-2 text-sm font-medium text-white transition-colors before:bg-red-900/50 hover:before:bg-red-900/75 disabled:cursor-not-allowed disabled:opacity-50"
                 >
-                  Previous
+                  <span className="shine"></span>
+                  <span className="relative z-10">Previous</span>
                 </button>
                 <span className="text-sm text-gray-400">
                   Page {page} of {data.total_pages}
@@ -94,15 +99,16 @@ export const Movies = () => {
                 <button
                   onClick={() => setPage(p => p + 1)}
                   disabled={page === data.total_pages || isFetching}
-                  className="rounded-md bg-red-900/50 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-red-900/75 disabled:cursor-not-allowed disabled:opacity-50"
+                  className="liquid-glass-button relative rounded-md px-4 py-2 text-sm font-medium text-white transition-colors before:bg-red-900/50 hover:before:bg-red-900/75 disabled:cursor-not-allowed disabled:opacity-50"
                 >
-                  Next
+                  <span className="shine"></span>
+                  <span className="relative z-10">Next</span>
                 </button>
               </div>
             )}
           </>
         )}
       </div>
-    </div>
+    </>
   )
 }

@@ -12,6 +12,9 @@ export interface Movie {
   overview?: string
   vote_count?: number
   original_language?: string
+  genres?: { id: number; name: string }[]
+  runtime?: number
+  backdrop_path?: string
 }
 
 export interface TVShow {
@@ -122,5 +125,51 @@ export const tmdb = {
     const response = await fetch(`${BASE_URL}/tv/popular?${params.toString()}`)
     const data = await response.json()
     return data as TVShowsResponse
+  },
+
+  // Get a specific movie by ID
+  getMovie: async (movieId: number): Promise<Movie | null> => {
+    try {
+      const response = await fetch(
+        `${BASE_URL}/movie/${movieId}?api_key=${TMDB_API_KEY}&language=en-US`
+      )
+      if (!response.ok) {
+        console.error(
+          `Error fetching movie: ${response.status} ${response.statusText}`
+        )
+        return null
+      }
+      const data = await response.json()
+      return {
+        ...data,
+        media_type: 'movie',
+      } as Movie
+    } catch (error) {
+      console.error(`Error getting movie details for ID ${movieId}:`, error)
+      return null
+    }
+  },
+
+  // Get popular movies
+  getPopularMovies: async (page: number = 1): Promise<Movie[]> => {
+    try {
+      const response = await fetch(
+        `${BASE_URL}/movie/popular?api_key=${TMDB_API_KEY}&language=en-US&page=${page}`
+      )
+      if (!response.ok) {
+        console.error(
+          `Error fetching popular movies: ${response.status} ${response.statusText}`
+        )
+        return []
+      }
+      const data = await response.json()
+      return data.results.map((movie: any) => ({
+        ...movie,
+        media_type: 'movie',
+      })) as Movie[]
+    } catch (error) {
+      console.error('Error getting popular movies:', error)
+      return []
+    }
   },
 }

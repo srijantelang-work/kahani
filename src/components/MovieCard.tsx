@@ -15,11 +15,14 @@ export interface MovieCardData {
 
 interface MovieCardProps {
   movie: MovieCardData
+  glass?: boolean
 }
 
-export const MovieCard = ({ movie }: MovieCardProps) => {
+export const MovieCard = ({ movie, glass = true }: MovieCardProps) => {
   const frontContent = (
-    <div className="group relative flex h-full flex-col overflow-hidden rounded-lg bg-black shadow">
+    <div
+      className={`group relative flex h-full flex-col overflow-hidden rounded-lg ${glass ? 'bg-transparent backdrop-blur-sm' : 'bg-black'} shadow`}
+    >
       <div className="aspect-[2/3] w-full overflow-hidden">
         <img
           src={getImageUrl(movie.poster_path)}
@@ -30,8 +33,11 @@ export const MovieCard = ({ movie }: MovieCardProps) => {
       </div>
       <div className="flex flex-1 flex-col justify-between p-4">
         <div className="flex-1">
-          <h3 className="line-clamp-2 text-lg font-medium text-white group-hover:text-red-500">
+          <h3
+            className={`line-clamp-2 text-lg font-medium ${glass ? 'liquid-glass-text' : 'text-white'} group-hover:text-red-500`}
+          >
             {movie.title}
+            {glass && <span className="shine-text"></span>}
           </h3>
           <p className="mt-1 text-sm text-gray-400">
             {movie.release_date.split('-')[0]}
@@ -50,9 +56,16 @@ export const MovieCard = ({ movie }: MovieCardProps) => {
   )
 
   const backContent = (
-    <div className="flex h-full flex-col bg-black p-4">
+    <div
+      className={`flex h-full flex-col ${glass ? 'border border-white/10 bg-transparent backdrop-blur-sm' : 'bg-black'} p-4`}
+    >
       <div className="mb-4 text-center">
-        <h3 className="text-xl font-medium text-white">{movie.title}</h3>
+        <h3
+          className={`text-xl font-medium ${glass ? 'liquid-glass-text' : 'text-white'}`}
+        >
+          {movie.title}
+          {glass && <span className="shine-text"></span>}
+        </h3>
         <p className="mt-1 text-sm text-gray-400">
           {new Date(movie.release_date).getFullYear()}
         </p>
@@ -97,7 +110,7 @@ export const MovieCard = ({ movie }: MovieCardProps) => {
       to={`/movie/${movie.id}`}
       className="block h-full min-h-[32rem] w-full transform transition-all duration-300 hover:z-10 hover:scale-105"
     >
-      <FlipCard front={frontContent} back={backContent} />
+      <FlipCard front={frontContent} back={backContent} glass={glass} />
     </Link>
   )
 }
