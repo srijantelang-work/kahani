@@ -1,17 +1,18 @@
 import { Link } from 'react-router-dom'
 import {
   BeakerIcon,
-  ChartBarIcon,
+  FilmIcon,
+  MagnifyingGlassIcon,
   BookmarkIcon,
-  ChatBubbleBottomCenterTextIcon,
-  CogIcon,
-  StarIcon,
+  WifiIcon,
 } from '@heroicons/react/24/outline'
 import { Navbar } from '../components/layout/Navbar'
 import { Footer } from '../components/layout/Footer'
-import { useState } from 'react'
 import { TrendingSection } from '../components/TrendingSection'
 import { useAuth } from '../hooks/useAuth'
+import { PersonalizedHeroMovie } from '../components/PersonalizedHeroMovie'
+import { HowItWorks } from '../components/layout/HowItWorks'
+import { motion } from 'framer-motion'
 
 interface Feature {
   name: string
@@ -23,75 +24,37 @@ const features: Feature[] = [
   {
     name: 'AI-Powered Discovery',
     description:
-      'Uses advanced AI to understand your preferences and provide tailored recommendations.',
+      'Powered by Gemini AI to understand your preferences and provide intelligent, context-aware recommendations across movies, TV shows, and books.',
     icon: BeakerIcon,
   },
   {
-    name: 'Trending Content',
-    description: "Stay updated with what's popular right now.",
-    icon: ChartBarIcon,
+    name: 'Multi-Platform Content',
+    description:
+      'Seamlessly integrates content from TMDB and Google Books, giving you access to a vast library of movies, TV shows, and books all in one place.',
+    icon: FilmIcon,
   },
   {
-    name: 'Save Favorites',
+    name: 'Smart Search & Filters',
     description:
-      'Create your personal collection of favorite movies and shows for easy access.',
+      'Advanced search with natural language processing and intelligent filters to help you find exactly what you want to watch or read.',
+    icon: MagnifyingGlassIcon,
+  },
+  {
+    name: 'Personalized Experience',
+    description:
+      'Create collections, track your history, and get recommendations tailored to your unique taste and viewing patterns.',
     icon: BookmarkIcon,
   },
-]
-
-const howItWorks = [
   {
-    name: 'Describe What You Like',
+    name: 'Offline Access',
     description:
-      "Tell us what you're in the mood for using natural language, just like chatting with a friend.",
-    icon: ChatBubbleBottomCenterTextIcon,
-  },
-  {
-    name: 'AI Analyzes Your Preferences',
-    description:
-      'Our AI understands your tastes and searches through thousands of titles to find perfect matches.',
-    icon: CogIcon,
-  },
-  {
-    name: 'Get Personalized Recommendations',
-    description:
-      "Receive curated suggestions that match exactly what you're looking for, with details on where to watch.",
-    icon: StarIcon,
+      'Progressive Web App with offline support, caching your favorite content and searches for uninterrupted access.',
+    icon: WifiIcon,
   },
 ]
 
 export const Landing = () => {
   const { user } = useAuth()
-  const [selectedPoster, setSelectedPoster] = useState<number | null>(null)
-  const [isFanned, setIsFanned] = useState(false)
-
-  const posters = [
-    {
-      id: 1,
-      angle: isFanned ? -20 : -5,
-      translateX: isFanned ? '-20%' : '-2%',
-    },
-    {
-      id: 2,
-      angle: 0,
-      translateX: '0%',
-    },
-    {
-      id: 3,
-      angle: isFanned ? 20 : 5,
-      translateX: isFanned ? '20%' : '2%',
-    },
-  ]
-
-  const handlePosterClick = (id: number) => {
-    if (selectedPoster === id) {
-      setSelectedPoster(null)
-      setIsFanned(false)
-    } else {
-      setSelectedPoster(id)
-      setIsFanned(true)
-    }
-  }
 
   return (
     <div className="flex min-h-screen flex-col bg-black text-white">
@@ -103,13 +66,21 @@ export const Landing = () => {
           <div className="relative z-10 bg-black pb-8 sm:pb-16 md:pb-20 lg:w-full lg:max-w-2xl lg:pb-28 xl:pb-32">
             <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
               <div className="flex min-h-[calc(100vh-4rem)] flex-col justify-center sm:text-center lg:text-left">
-                <h1 className="text-4xl font-extrabold tracking-tight sm:text-6xl md:text-7xl lg:text-8xl">
-                  <span className="block font-bold">Discover Your Next</span>{' '}
-                  <span className="block text-red-600">
-                    Favorite Show or Movie or Book
+                <h1 className="text-3xl font-extrabold tracking-tight sm:text-4xl md:text-5xl lg:text-6xl">
+                  <span className="liquid-glass-text relative mb-1 block font-bold">
+                    Discover Your Next
+                    <span className="shine-text absolute inset-0"></span>
+                  </span>{' '}
+                  <span className="liquid-glass-text relative block text-red-600">
+                    Favorite
+                    <span className="shine-text red absolute inset-0"></span>
+                  </span>
+                  <span className="liquid-glass-text relative mt-2 block text-2xl text-red-600 sm:text-3xl md:text-4xl lg:text-5xl">
+                    Show or Movie or Book
+                    <span className="shine-text red absolute inset-0"></span>
                   </span>
                 </h1>
-                <p className="mt-4 text-lg text-gray-300 sm:mt-6 sm:text-xl md:text-2xl lg:mx-0">
+                <p className="mt-3 text-base text-gray-300 sm:mt-5 sm:text-lg md:text-xl lg:mx-0">
                   Kahani uses AI to provide personalized recommendations based
                   on your unique preferences and interests.
                 </p>
@@ -117,17 +88,22 @@ export const Landing = () => {
                   {user ? (
                     <Link
                       to="/dashboard"
-                      className="flex items-center justify-center rounded-md bg-red-600 px-6 py-3 text-base font-medium text-white transition-colors hover:bg-red-700"
+                      className="liquid-glass-button relative flex items-center justify-center overflow-hidden rounded-md px-6 py-3 text-base font-medium text-white transition-all duration-300 before:absolute before:inset-0 before:z-0 before:bg-gradient-to-r before:from-red-500/80 before:to-red-600/80 before:backdrop-blur-sm hover:shadow-lg hover:shadow-red-500/25 hover:before:from-red-500/90 hover:before:to-red-600/90"
                     >
-                      Go to Recommendations
+                      <span className="shine"></span>
+                      <span className="z-10">Go to Recommendations</span>
                     </Link>
                   ) : (
                     <>
                       <Link
                         to="/dashboard"
-                        className="flex items-center justify-center rounded-md bg-red-600 px-6 py-3 text-base font-medium text-white transition-colors hover:bg-red-700"
+                        className="liquid-glass-button relative flex items-center justify-center overflow-hidden rounded-md px-6 py-3 text-base font-medium text-white transition-all duration-300 before:absolute before:inset-0 before:z-0 before:bg-gradient-to-r before:from-red-500/80 before:to-red-600/80 before:backdrop-blur-sm hover:shadow-lg hover:shadow-red-500/25 hover:before:from-red-500/90 hover:before:to-red-600/90"
                       >
-                        Get Started — It's Free
+                        <span className="shine"></span>
+                        <span className="z-10 flex items-center">
+                          <span className="mr-2 h-0.5 w-5 rounded bg-white/90"></span>
+                          Get Started — It's Free
+                        </span>
                       </Link>
                       <Link
                         to="/login"
@@ -142,133 +118,134 @@ export const Landing = () => {
             </main>
           </div>
         </div>
-        <div className="lg:absolute lg:inset-y-0 lg:right-0 lg:w-1/2">
-          <div className="relative h-full w-full">
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="relative mt-16 h-[350px] w-[250px] sm:h-[400px] sm:w-[300px] md:h-[450px] md:w-[325px] lg:h-[500px] lg:w-[350px]">
-                {posters.map(poster => (
-                  <div
-                    key={poster.id}
-                    onClick={() => handlePosterClick(poster.id)}
-                    className={`absolute left-1/2 top-1/2 aspect-[2/3] w-full cursor-pointer transition-all duration-500 ease-out
-                      ${
-                        selectedPoster === poster.id
-                          ? 'z-30 scale-105'
-                          : selectedPoster === null
-                            ? 'hover:scale-102'
-                            : 'scale-95 opacity-50'
-                      }`}
-                    style={{
-                      transform: `translate(-50%, -50%) 
-                        translateX(${poster.translateX})
-                        rotate(${poster.angle}deg)
-                        ${selectedPoster === poster.id ? 'translateZ(50px)' : ''}`,
-                      zIndex:
-                        selectedPoster === poster.id ? 30 : 20 - poster.id,
-                      transition: 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
-                    }}
-                  >
-                    <img
-                      src={`/images/poster${poster.id}.jpg`}
-                      alt={`Movie Poster ${poster.id}`}
-                      className="h-full w-full rounded-lg object-cover shadow-xl transition-shadow duration-500"
-                    />
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
+
+        {/* Personalized Movie Recommendation */}
+        <PersonalizedHeroMovie />
       </div>
 
       {/* Trending Section */}
       <TrendingSection />
 
       {/* Features Section */}
-      <div id="features" className="bg-neutral-900 py-24">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="lg:text-center">
-            <h2 className="text-4xl font-bold uppercase tracking-wider text-red-600">
-              FEATURES
-            </h2>
-            <p className="mt-2 text-3xl font-extrabold leading-8 tracking-tight text-white sm:text-4xl">
-              Powered by AI for Perfect Recommendations
+      <div
+        id="features"
+        className="relative overflow-hidden bg-neutral-900 py-24"
+      >
+        {/* Background gradient effects */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black via-red-950/5 to-black" />
+
+        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-2xl lg:text-center">
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="relative inline-block text-2xl font-bold uppercase tracking-wider text-red-600 sm:text-3xl"
+            >
+              <span className="relative z-10">Features</span>
+              <div className="absolute -bottom-1 left-0 h-[2px] w-full bg-gradient-to-r from-red-600/80 to-transparent"></div>
+            </motion.h2>
+            <p className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">
+              Everything you need to discover your next favorite
+            </p>
+            <p className="mt-6 text-lg leading-8 text-gray-300">
+              Explore a world of entertainment with our powerful features
+              designed to enhance your discovery experience.
             </p>
           </div>
-
-          <div className="mt-20">
-            <div className="grid grid-cols-1 gap-12 lg:grid-cols-3">
+          <div className="mx-auto mt-16 max-w-2xl sm:mt-20 lg:mt-24 lg:max-w-none">
+            <dl className="grid max-w-xl grid-cols-1 gap-x-8 gap-y-16 md:grid-cols-2 lg:max-w-none lg:grid-cols-3">
               {features.map(feature => (
-                <div key={feature.name} className="relative">
-                  <div className="absolute flex h-12 w-12 items-center justify-center rounded-md bg-red-600 text-white">
-                    <feature.icon className="h-6 w-6" aria-hidden="true" />
+                <motion.div
+                  key={feature.name}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5 }}
+                  className="feature-card rounded-2xl border border-red-500/20 bg-black/30 p-6 shadow-lg backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:shadow-red-500/20"
+                >
+                  <div className="relative pl-16">
+                    <dt className="text-base font-semibold leading-7">
+                      <div className="absolute left-0 top-0 flex h-12 w-12 items-center justify-center rounded-lg bg-gradient-to-br from-red-600 to-red-900">
+                        <feature.icon
+                          className="h-6 w-6 text-white"
+                          aria-hidden="true"
+                        />
+                      </div>
+                      <span className="bg-gradient-to-r from-red-500 to-red-800 bg-clip-text text-transparent">
+                        {feature.name}
+                      </span>
+                    </dt>
+                    <dd className="mt-2 text-base leading-7 text-gray-300">
+                      {feature.description}
+                    </dd>
                   </div>
-                  <p className="ml-16 text-lg font-medium leading-6 text-white">
-                    {feature.name}
-                  </p>
-                  <p className="ml-16 mt-2 text-base text-gray-300">
-                    {feature.description}
-                  </p>
-                </div>
+                </motion.div>
               ))}
-            </div>
+            </dl>
           </div>
         </div>
       </div>
+
+      {/* Ready to discover section */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        className="relative isolate mt-32 px-6 py-24 sm:py-32 lg:px-8"
+      >
+        {/* Gradient background */}
+        <div className="absolute inset-0 -z-10 overflow-hidden">
+          <div className="absolute inset-0 bg-black/80 backdrop-blur-xl" />
+          <div
+            className="absolute left-1/2 top-0 -z-10 h-[800px] w-[800px] -translate-x-1/2 transform-gpu blur-3xl"
+            aria-hidden="true"
+          >
+            <div
+              className="aspect-[1/1] bg-gradient-to-br from-red-500/40 to-red-900/40 opacity-30"
+              style={{
+                clipPath: 'circle(50% at 50% 50%)',
+              }}
+            />
+          </div>
+        </div>
+
+        <div className="mx-auto max-w-4xl text-center">
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="font-turret bg-gradient-to-r from-red-500 to-red-800 bg-clip-text text-4xl font-bold tracking-tight text-transparent sm:text-6xl"
+          >
+            Ready to discover?
+          </motion.h2>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+            className="font-turret mt-6 text-lg leading-8 text-gray-300"
+          >
+            Start exploring personalized recommendations today.
+          </motion.p>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6 }}
+            className="mt-10 flex items-center justify-center"
+          >
+            <Link
+              to="/movies"
+              className="liquid-glass-button relative flex items-center justify-center overflow-hidden rounded-md px-6 py-3 text-base font-medium text-white transition-all duration-300 before:absolute before:inset-0 before:z-0 before:bg-gradient-to-r before:from-red-500/80 before:to-red-600/80 before:backdrop-blur-sm hover:shadow-lg hover:shadow-red-500/25 hover:before:from-red-500/90 hover:before:to-red-600/90"
+            >
+              <span className="shine"></span>
+              <span className="z-10">Explore All Movies & Shows</span>
+            </Link>
+          </motion.div>
+        </div>
+      </motion.div>
 
       {/* How It Works Section */}
-      <div id="how-it-works" className="bg-black py-24">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="lg:text-center">
-            <h2 className="text-4xl font-bold uppercase tracking-wider text-red-600">
-              HOW IT WORKS
-            </h2>
-            <p className="mt-2 text-3xl font-extrabold leading-8 tracking-tight text-white sm:text-4xl">
-              Three Simple Steps
-            </p>
-          </div>
-
-          <div className="mt-20">
-            <div className="grid grid-cols-1 gap-12 lg:grid-cols-3">
-              {howItWorks.map((step, index) => (
-                <div key={step.name} className="relative">
-                  <div className="absolute flex h-12 w-12 items-center justify-center rounded-full bg-red-600 text-white">
-                    <span className="text-lg font-bold">{index + 1}</span>
-                  </div>
-                  <p className="ml-16 text-lg font-medium leading-6 text-white">
-                    {step.name}
-                  </p>
-                  <p className="ml-16 mt-2 text-base text-gray-300">
-                    {step.description}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* CTA Section */}
-      <div className="bg-red-600">
-        <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:flex lg:items-center lg:justify-between lg:px-8 lg:py-16">
-          <h2 className="text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
-            <span className="block">Ready to Discover Your Next Favorite?</span>
-            <span className="block text-red-100">
-              Join thousands of users who have found their perfect match.
-            </span>
-          </h2>
-          <div className="mt-8 flex lg:mt-0 lg:flex-shrink-0">
-            <div className="inline-flex rounded-md shadow">
-              <Link
-                to="/dashboard"
-                className="inline-flex items-center justify-center rounded-md border border-transparent bg-white px-5 py-3 text-base font-medium text-red-600 hover:bg-red-50"
-              >
-                Get Started — It's Free
-              </Link>
-            </div>
-          </div>
-        </div>
-      </div>
+      <HowItWorks />
 
       <Footer />
     </div>
