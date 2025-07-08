@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { lazy, Suspense } from 'react'
 import {
   BeakerIcon,
   FilmIcon,
@@ -8,11 +9,56 @@ import {
 } from '@heroicons/react/24/outline'
 import { Navbar } from '../components/layout/Navbar'
 import { Footer } from '../components/layout/Footer'
-import { TrendingSection } from '../components/TrendingSection'
 import { useAuth } from '../hooks/useAuth'
-import { PersonalizedHeroMovie } from '../components/PersonalizedHeroMovie'
 import { HowItWorks } from '../components/layout/HowItWorks'
 import { motion } from 'framer-motion'
+
+// Lazy load heavy components to improve initial page load
+const TrendingSection = lazy(() =>
+  import('../components/TrendingSection').then(module => ({
+    default: module.TrendingSection,
+  }))
+)
+const PersonalizedHeroMovie = lazy(() =>
+  import('../components/PersonalizedHeroMovie').then(module => ({
+    default: module.PersonalizedHeroMovie,
+  }))
+)
+
+// Loading fallbacks for heavy components
+const TrendingSectionFallback = () => (
+  <div className="bg-black py-24">
+    <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div className="lg:text-center">
+        <h2 className="text-4xl font-bold uppercase tracking-wider text-red-600">
+          TRENDING NOW
+        </h2>
+        <p className="mt-2 text-3xl font-extrabold leading-8 tracking-tight text-white sm:text-4xl">
+          Popular Movies & TV Shows
+        </p>
+      </div>
+      <div className="mt-12 grid grid-cols-2 gap-8 sm:grid-cols-3 lg:grid-cols-4">
+        {[...Array(8)].map((_, i) => (
+          <div key={i} className="animate-pulse">
+            <div className="aspect-[2/3] rounded-lg bg-gray-800"></div>
+            <div className="mt-4 h-4 w-3/4 rounded bg-gray-800"></div>
+            <div className="mt-2 h-4 w-1/2 rounded bg-gray-800"></div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+)
+
+const PersonalizedHeroMovieFallback = () => (
+  <div className="lg:absolute lg:inset-y-0 lg:right-0 lg:w-1/2">
+    <div className="relative h-full w-full">
+      <div className="absolute inset-0 flex items-center justify-center">
+        <div className="relative mt-16 h-[350px] w-[250px] animate-pulse rounded-lg bg-gray-800 sm:h-[400px] sm:w-[300px] md:h-[450px] md:w-[325px] lg:h-[500px] lg:w-[350px]" />
+      </div>
+    </div>
+  </div>
+)
 
 interface Feature {
   name: string
@@ -119,12 +165,16 @@ export const Landing = () => {
           </div>
         </div>
 
-        {/* Personalized Movie Recommendation */}
-        <PersonalizedHeroMovie />
+        {/* Personalized Movie Recommendation - Lazy Loaded */}
+        <Suspense fallback={<PersonalizedHeroMovieFallback />}>
+          <PersonalizedHeroMovie />
+        </Suspense>
       </div>
 
-      {/* Trending Section */}
-      <TrendingSection />
+      {/* Trending Section - Lazy Loaded */}
+      <Suspense fallback={<TrendingSectionFallback />}>
+        <TrendingSection />
+      </Suspense>
 
       {/* Features Section */}
       <div
