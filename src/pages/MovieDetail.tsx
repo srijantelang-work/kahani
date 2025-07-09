@@ -95,11 +95,11 @@ export const MovieDetail = () => {
                 {movie.vote_average.toFixed(1)}
               </span>
             </div>
-            <p className="mb-6 text-lg leading-relaxed text-gray-300">
+            <p className="description-text mb-6 text-lg leading-relaxed text-gray-300">
               {movie.overview}
             </p>
             <div className="mb-6">
-              <h2 className="mb-2 text-xl font-semibold text-white">Genres</h2>
+              <h2 className="subheading mb-2 text-xl text-white">Genres</h2>
               <div className="flex flex-wrap gap-2">
                 {movie.genres?.map(genre => (
                   <span
@@ -114,12 +114,15 @@ export const MovieDetail = () => {
             {movie.production_companies &&
               movie.production_companies.length > 0 && (
                 <div>
-                  <h2 className="mb-2 text-xl font-semibold text-white">
+                  <h2 className="subheading mb-2 text-xl text-white">
                     Production Companies
                   </h2>
                   <div className="flex flex-wrap gap-4">
                     {movie.production_companies.map(company => (
-                      <span key={company.id} className="text-sm text-gray-400">
+                      <span
+                        key={company.id}
+                        className="description-text text-sm text-gray-400"
+                      >
                         {company.name}
                       </span>
                     ))}
@@ -131,7 +134,9 @@ export const MovieDetail = () => {
 
         {/* Similar Movies Section */}
         <div className="mt-12">
-          <h2 className="mb-6 text-2xl font-bold text-white">Similar Movies</h2>
+          <h2 className="subheading mb-6 text-2xl text-white">
+            Similar Movies
+          </h2>
           {isSimilarLoading ? (
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
               {[...Array(4)].map((_, i) => (

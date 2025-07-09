@@ -89,7 +89,7 @@ export const BookDetail = () => {
               {volumeInfo.title}
             </h1>
             {volumeInfo.subtitle && (
-              <p className="mt-2 text-xl text-gray-400">
+              <p className="description-text mt-2 text-xl text-gray-400">
                 {volumeInfo.subtitle}
               </p>
             )}
@@ -98,8 +98,8 @@ export const BookDetail = () => {
               {/* Authors */}
               {volumeInfo.authors && (
                 <div>
-                  <h2 className="text-lg font-semibold text-white">Authors</h2>
-                  <p className="mt-2 text-gray-300">
+                  <h2 className="subheading text-lg text-white">Authors</h2>
+                  <p className="description-text mt-2 text-gray-300">
                     {volumeInfo.authors.join(', ')}
                   </p>
                 </div>
@@ -108,11 +108,9 @@ export const BookDetail = () => {
               {/* Description */}
               {volumeInfo.description && (
                 <div>
-                  <h2 className="text-lg font-semibold text-white">
-                    Description
-                  </h2>
-                  <p
-                    className="mt-2 text-gray-300"
+                  <h2 className="subheading text-lg text-white">Description</h2>
+                  <div
+                    className="description-text mt-2 text-gray-300"
                     dangerouslySetInnerHTML={{
                       __html: volumeInfo.description,
                     }}
@@ -125,18 +123,20 @@ export const BookDetail = () => {
                 {/* Publication Info */}
                 {volumeInfo.publisher && (
                   <div>
-                    <h2 className="text-sm font-medium text-gray-400">
+                    <h2 className="subheading text-sm text-gray-400">
                       Publisher
                     </h2>
-                    <p className="mt-1 text-white">{volumeInfo.publisher}</p>
+                    <p className="description-text mt-1 text-white">
+                      {volumeInfo.publisher}
+                    </p>
                   </div>
                 )}
                 {volumeInfo.publishedDate && (
                   <div>
-                    <h2 className="text-sm font-medium text-gray-400">
+                    <h2 className="subheading text-sm text-gray-400">
                       Published Date
                     </h2>
-                    <p className="mt-1 text-white">
+                    <p className="description-text mt-1 text-white">
                       {new Date(volumeInfo.publishedDate).toLocaleDateString()}
                     </p>
                   </div>
@@ -145,10 +145,10 @@ export const BookDetail = () => {
                 {/* Categories */}
                 {volumeInfo.categories && (
                   <div>
-                    <h2 className="text-sm font-medium text-gray-400">
+                    <h2 className="subheading text-sm text-gray-400">
                       Categories
                     </h2>
-                    <p className="mt-1 text-white">
+                    <p className="description-text mt-1 text-white">
                       {volumeInfo.categories.join(', ')}
                     </p>
                   </div>
@@ -157,25 +157,25 @@ export const BookDetail = () => {
                 {/* Page Count */}
                 {volumeInfo.pageCount && (
                   <div>
-                    <h2 className="text-sm font-medium text-gray-400">
+                    <h2 className="subheading text-sm text-gray-400">
                       Page Count
                     </h2>
-                    <p className="mt-1 text-white">{volumeInfo.pageCount}</p>
+                    <p className="description-text mt-1 text-white">
+                      {volumeInfo.pageCount}
+                    </p>
                   </div>
                 )}
 
                 {/* Rating */}
                 {volumeInfo.averageRating && (
                   <div>
-                    <h2 className="text-sm font-medium text-gray-400">
-                      Rating
-                    </h2>
+                    <h2 className="subheading text-sm text-gray-400">Rating</h2>
                     <div className="mt-1 flex items-center">
-                      <span className="text-white">
+                      <span className="description-text text-white">
                         {volumeInfo.averageRating.toFixed(1)}
                       </span>
                       {volumeInfo.ratingsCount && (
-                        <span className="ml-2 text-sm text-gray-400">
+                        <span className="description-text ml-2 text-sm text-gray-400">
                           ({volumeInfo.ratingsCount.toLocaleString()} ratings)
                         </span>
                       )}

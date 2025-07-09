@@ -113,7 +113,7 @@ export const GeminiProvider: React.FC<GeminiProviderProps> = ({
       // --- Adjust prompt based on mediaType ---
       let formatInstructions: string
       if (mediaType === 'book') {
-        formatInstructions = `Provide recommendations in the following JSON format only, with no extra text:
+        formatInstructions = `Provide exactly 4 recommendations in the following JSON format only, with no extra text:
 {
   "recommendations": [
     {
@@ -127,7 +127,7 @@ export const GeminiProvider: React.FC<GeminiProviderProps> = ({
 }`
       } else {
         // movie or tv
-        formatInstructions = `Provide recommendations in the following JSON format only, with no extra text:
+        formatInstructions = `Provide exactly 4 recommendations in the following JSON format only, with no extra text:
 {
   "recommendations": [
     {
@@ -141,7 +141,7 @@ export const GeminiProvider: React.FC<GeminiProviderProps> = ({
 }`
       }
 
-      const fullPrompt = `Generate personalized ${mediaType} recommendations based on the following request: "${prompt}"${genrePromptPart}\n\n${formatInstructions}`
+      const fullPrompt = `Generate exactly 4 personalized ${mediaType} recommendations based on the following request: "${prompt}"${genrePromptPart}\n\n${formatInstructions}`
 
       console.log('Sending request to Gemini API with prompt:', fullPrompt)
 
@@ -166,7 +166,7 @@ export const GeminiProvider: React.FC<GeminiProviderProps> = ({
           const jsonRegex = /```json\s*([\s\S]*?)\s*```/
           const match = text.match(jsonRegex)
           if (match && match[1]) {
-            text = match[1].trim() // Trim whitespace from the extracted JSON string
+            text = match[1].trim()
             console.log('Extracted JSON:', text)
           }
 
@@ -176,8 +176,9 @@ export const GeminiProvider: React.FC<GeminiProviderProps> = ({
               parsedResponse.recommendations &&
               Array.isArray(parsedResponse.recommendations)
             ) {
-              geminiRecommendations = parsedResponse.recommendations
-              success = true // Mark as success to exit the retry loop
+              // Ensure exactly 4 recommendations
+              geminiRecommendations = parsedResponse.recommendations.slice(0, 4)
+              success = true
               console.log(
                 'Successfully parsed Gemini recommendations:',
                 geminiRecommendations
@@ -203,7 +204,7 @@ export const GeminiProvider: React.FC<GeminiProviderProps> = ({
               details: err.message || err,
             })
             setLoading(false)
-            return [] // Return empty on final failure
+            return []
           }
           await new Promise(resolve => setTimeout(resolve, retryDelay))
         }

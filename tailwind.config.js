@@ -52,8 +52,9 @@ export default {
         },
       },
       fontFamily: {
-        heading: ['Bebas Neue', 'sans-serif'],
-        body: ['Open Sans', 'sans-serif'],
+        sans: ['Comic Neue', 'system-ui', 'sans-serif'],
+        raleway: ['Raleway', 'system-ui', 'sans-serif'],
+        montserrat: ['Montserrat', 'system-ui', 'sans-serif'],
       },
       borderRadius: {
         lg: 'var(--radius)',

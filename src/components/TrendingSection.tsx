@@ -137,7 +137,7 @@ export const TrendingSection = () => {
     <div id="trending" className="bg-black py-24" ref={sectionRef}>
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="lg:text-center">
-          <h2 className="text-4xl font-bold uppercase tracking-wider text-red-600">
+          <h2 className="font-montserrat text-4xl font-semibold uppercase tracking-wider text-red-600">
             TRENDING NOW
           </h2>
           <p className="mt-2 text-3xl font-extrabold leading-8 tracking-tight text-white sm:text-4xl">

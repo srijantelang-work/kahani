@@ -19,13 +19,8 @@ const TrendingSection = lazy(() =>
     default: module.TrendingSection,
   }))
 )
-const PersonalizedHeroMovie = lazy(() =>
-  import('../components/PersonalizedHeroMovie').then(module => ({
-    default: module.PersonalizedHeroMovie,
-  }))
-)
 
-// Loading fallbacks for heavy components
+// Loading fallback for trending section
 const TrendingSectionFallback = () => (
   <div className="bg-black py-24">
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -45,16 +40,6 @@ const TrendingSectionFallback = () => (
             <div className="mt-2 h-4 w-1/2 rounded bg-gray-800"></div>
           </div>
         ))}
-      </div>
-    </div>
-  </div>
-)
-
-const PersonalizedHeroMovieFallback = () => (
-  <div className="lg:absolute lg:inset-y-0 lg:right-0 lg:w-1/2">
-    <div className="relative h-full w-full">
-      <div className="absolute inset-0 flex items-center justify-center">
-        <div className="relative mt-16 h-[350px] w-[250px] animate-pulse rounded-lg bg-gray-800 sm:h-[400px] sm:w-[300px] md:h-[450px] md:w-[325px] lg:h-[500px] lg:w-[350px]" />
       </div>
     </div>
   </div>
@@ -107,68 +92,68 @@ export const Landing = () => {
       <Navbar />
 
       {/* Hero Section */}
-      <div className="relative overflow-hidden pt-16">
-        <div className="mx-auto max-w-7xl">
-          <div className="relative z-10 bg-black pb-8 sm:pb-16 md:pb-20 lg:w-full lg:max-w-2xl lg:pb-28 xl:pb-32">
-            <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-              <div className="flex min-h-[calc(100vh-4rem)] flex-col justify-center sm:text-center lg:text-left">
-                <h1 className="text-3xl font-extrabold tracking-tight sm:text-4xl md:text-5xl lg:text-6xl">
-                  <span className="liquid-glass-text relative mb-1 block font-bold">
-                    Discover Your Next
-                    <span className="shine-text absolute inset-0"></span>
-                  </span>{' '}
-                  <span className="liquid-glass-text relative block text-red-600">
-                    Favorite
-                    <span className="shine-text red absolute inset-0"></span>
-                  </span>
-                  <span className="liquid-glass-text relative mt-2 block text-2xl text-red-600 sm:text-3xl md:text-4xl lg:text-5xl">
-                    Show or Movie or Book
-                    <span className="shine-text red absolute inset-0"></span>
-                  </span>
-                </h1>
-                <p className="mt-3 text-base text-gray-300 sm:mt-5 sm:text-lg md:text-xl lg:mx-0">
-                  Kahani uses AI to provide personalized recommendations based
-                  on your unique preferences and interests.
-                </p>
-                <div className="mt-8 flex flex-col space-y-3 sm:mt-10 sm:flex-row sm:space-x-4 sm:space-y-0">
-                  {user ? (
-                    <Link
-                      to="/dashboard"
-                      className="liquid-glass-button relative flex items-center justify-center overflow-hidden rounded-md px-6 py-3 text-base font-medium text-white transition-all duration-300 before:absolute before:inset-0 before:z-0 before:bg-gradient-to-r before:from-red-500/80 before:to-red-600/80 before:backdrop-blur-sm hover:shadow-lg hover:shadow-red-500/25 hover:before:from-red-500/90 hover:before:to-red-600/90"
-                    >
-                      <span className="shine"></span>
-                      <span className="z-10">Go to Recommendations</span>
-                    </Link>
-                  ) : (
-                    <>
-                      <Link
-                        to="/dashboard"
-                        className="liquid-glass-button relative flex items-center justify-center overflow-hidden rounded-md px-6 py-3 text-base font-medium text-white transition-all duration-300 before:absolute before:inset-0 before:z-0 before:bg-gradient-to-r before:from-red-500/80 before:to-red-600/80 before:backdrop-blur-sm hover:shadow-lg hover:shadow-red-500/25 hover:before:from-red-500/90 hover:before:to-red-600/90"
-                      >
-                        <span className="shine"></span>
-                        <span className="z-10 flex items-center">
-                          <span className="mr-2 h-0.5 w-5 rounded bg-white/90"></span>
-                          Get Started — It's Free
-                        </span>
-                      </Link>
-                      <Link
-                        to="/login"
-                        className="flex items-center justify-center rounded-md border border-gray-600 bg-transparent px-6 py-3 text-base font-medium text-white transition-colors hover:bg-white/5"
-                      >
-                        Sign In
-                      </Link>
-                    </>
-                  )}
-                </div>
-              </div>
-            </main>
-          </div>
-        </div>
+      <div className="relative min-h-screen overflow-hidden">
+        <div className="mx-auto flex min-h-screen max-w-7xl flex-col items-center justify-center px-4 text-center sm:px-6 lg:px-8">
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="font-montserrat text-6xl font-semibold tracking-tight text-red-600 sm:text-7xl md:text-8xl lg:text-9xl"
+          >
+            KAHANI
+          </motion.h1>
 
-        {/* Personalized Movie Recommendation - Lazy Loaded */}
-        <Suspense fallback={<PersonalizedHeroMovieFallback />}>
-          <PersonalizedHeroMovie />
-        </Suspense>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="mt-8 max-w-3xl"
+          >
+            <h2 className="font-raleway text-2xl font-thin tracking-wide text-white sm:text-3xl md:text-4xl">
+              Discover Your Next Favorite Show or Movie or Book
+            </h2>
+            <p className="mt-4 text-base text-gray-300 sm:text-lg md:text-xl">
+              Kahani uses AI to provide personalized recommendations based on
+              your unique preferences and interests.
+            </p>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            className="mt-12 flex flex-col space-y-4 sm:flex-row sm:space-x-6 sm:space-y-0"
+          >
+            {user ? (
+              <Link
+                to="/dashboard"
+                className="liquid-glass-button relative flex items-center justify-center overflow-hidden rounded-md px-8 py-4 text-lg font-medium text-white transition-all duration-300 before:absolute before:inset-0 before:z-0 before:bg-gradient-to-r before:from-red-500/80 before:to-red-600/80 before:backdrop-blur-sm hover:shadow-lg hover:shadow-red-500/25 hover:before:from-red-500/90 hover:before:to-red-600/90"
+              >
+                <span className="shine"></span>
+                <span className="z-10">Go to Recommendations</span>
+              </Link>
+            ) : (
+              <>
+                <Link
+                  to="/dashboard"
+                  className="liquid-glass-button relative flex items-center justify-center overflow-hidden rounded-md px-8 py-4 text-lg font-medium text-white transition-all duration-300 before:absolute before:inset-0 before:z-0 before:bg-gradient-to-r before:from-red-500/80 before:to-red-600/80 before:backdrop-blur-sm hover:shadow-lg hover:shadow-red-500/25 hover:before:from-red-500/90 hover:before:to-red-600/90"
+                >
+                  <span className="shine"></span>
+                  <span className="z-10 flex items-center">
+                    <span className="mr-2 h-0.5 w-5 rounded bg-white/90"></span>
+                    Get Started — It's Free
+                  </span>
+                </Link>
+                <Link
+                  to="/login"
+                  className="flex items-center justify-center rounded-md border border-gray-600 bg-transparent px-8 py-4 text-lg font-medium text-white transition-colors hover:bg-white/5"
+                >
+                  Sign In
+                </Link>
+              </>
+            )}
+          </motion.div>
+        </div>
       </div>
 
       {/* Trending Section - Lazy Loaded */}
@@ -190,7 +175,7 @@ export const Landing = () => {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="relative inline-block text-2xl font-bold uppercase tracking-wider text-red-600 sm:text-3xl"
+              className="relative inline-block font-montserrat text-2xl font-semibold uppercase tracking-wider text-red-600 sm:text-3xl"
             >
               <span className="relative z-10">Features</span>
               <div className="absolute -bottom-1 left-0 h-[2px] w-full bg-gradient-to-r from-red-600/80 to-transparent"></div>
@@ -236,63 +221,6 @@ export const Landing = () => {
           </div>
         </div>
       </div>
-
-      {/* Ready to discover section */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        className="relative isolate mt-32 px-6 py-24 sm:py-32 lg:px-8"
-      >
-        {/* Gradient background */}
-        <div className="absolute inset-0 -z-10 overflow-hidden">
-          <div className="absolute inset-0 bg-black/80 backdrop-blur-xl" />
-          <div
-            className="absolute left-1/2 top-0 -z-10 h-[800px] w-[800px] -translate-x-1/2 transform-gpu blur-3xl"
-            aria-hidden="true"
-          >
-            <div
-              className="aspect-[1/1] bg-gradient-to-br from-red-500/40 to-red-900/40 opacity-30"
-              style={{
-                clipPath: 'circle(50% at 50% 50%)',
-              }}
-            />
-          </div>
-        </div>
-
-        <div className="mx-auto max-w-4xl text-center">
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="font-turret bg-gradient-to-r from-red-500 to-red-800 bg-clip-text text-4xl font-bold tracking-tight text-transparent sm:text-6xl"
-          >
-            Ready to discover?
-          </motion.h2>
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4 }}
-            className="font-turret mt-6 text-lg leading-8 text-gray-300"
-          >
-            Start exploring personalized recommendations today.
-          </motion.p>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6 }}
-            className="mt-10 flex items-center justify-center"
-          >
-            <Link
-              to="/movies"
-              className="liquid-glass-button relative flex items-center justify-center overflow-hidden rounded-md px-6 py-3 text-base font-medium text-white transition-all duration-300 before:absolute before:inset-0 before:z-0 before:bg-gradient-to-r before:from-red-500/80 before:to-red-600/80 before:backdrop-blur-sm hover:shadow-lg hover:shadow-red-500/25 hover:before:from-red-500/90 hover:before:to-red-600/90"
-            >
-              <span className="shine"></span>
-              <span className="z-10">Explore All Movies & Shows</span>
-            </Link>
-          </motion.div>
-        </div>
-      </motion.div>
 
       {/* How It Works Section */}
       <HowItWorks />

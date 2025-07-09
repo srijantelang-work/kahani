@@ -37,15 +37,9 @@ export const HowItWorks = () => {
 
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="lg:text-center">
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            className="font-turret text-4xl font-bold uppercase tracking-wider text-red-600"
-          >
+          <h2 className="font-montserrat text-4xl font-semibold uppercase tracking-wider text-red-600">
             HOW IT WORKS
-          </motion.h2>
+          </h2>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -100,10 +94,12 @@ export const HowItWorks = () => {
                         />
                       </div>
                       <div>
-                        <h3 className="font-turret text-xl font-bold text-white">
+                        <h3 className="subheading text-xl text-white">
                           {step.name}
                         </h3>
-                        <p className="mt-2 text-gray-300">{step.description}</p>
+                        <p className="description-text mt-2 text-gray-300">
+                          {step.description}
+                        </p>
                       </div>
                     </div>
                   </div>

@@ -32,21 +32,21 @@ export const Navbar = () => {
           <div className="hidden sm:flex sm:space-x-2">
             <a
               href="#features"
-              className="liquid-glass-button group relative rounded-lg px-4 py-2 text-sm font-bold text-gray-300 transition-all duration-300 before:bg-transparent hover:text-white hover:before:bg-red-900/50"
+              className="liquid-glass-button subheading group relative rounded-lg px-4 py-2 text-sm text-gray-300 transition-all duration-300 before:bg-transparent hover:text-white hover:before:bg-red-900/50"
             >
               <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-red-600/0 via-red-600/5 to-red-600/0 opacity-0 blur-xl transition-opacity duration-500 group-hover:opacity-100"></div>
               <span className="relative z-10">Features</span>
             </a>
             <a
               href="#trending"
-              className="liquid-glass-button group relative rounded-lg px-4 py-2 text-sm font-bold text-gray-300 transition-all duration-300 before:bg-transparent hover:text-white hover:before:bg-red-900/50"
+              className="liquid-glass-button subheading group relative rounded-lg px-4 py-2 text-sm text-gray-300 transition-all duration-300 before:bg-transparent hover:text-white hover:before:bg-red-900/50"
             >
               <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-red-600/0 via-red-600/5 to-red-600/0 opacity-0 blur-xl transition-opacity duration-500 group-hover:opacity-100"></div>
               <span className="relative z-10">Trending</span>
             </a>
             <a
               href="#how-it-works"
-              className="liquid-glass-button group relative rounded-lg px-4 py-2 text-sm font-bold text-gray-300 transition-all duration-300 before:bg-transparent hover:text-white hover:before:bg-red-900/50"
+              className="liquid-glass-button subheading group relative rounded-lg px-4 py-2 text-sm text-gray-300 transition-all duration-300 before:bg-transparent hover:text-white hover:before:bg-red-900/50"
             >
               <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-red-600/0 via-red-600/5 to-red-600/0 opacity-0 blur-xl transition-opacity duration-500 group-hover:opacity-100"></div>
               <span className="relative z-10">How It Works</span>
@@ -57,7 +57,7 @@ export const Navbar = () => {
             {isAuthenticated ? (
               <button
                 onClick={signOut}
-                className="liquid-glass-button group relative flex items-center space-x-2 rounded-lg border border-red-800/30 px-4 py-2 text-sm font-bold text-gray-300 transition-all duration-300 before:bg-transparent hover:border-red-800/50 hover:text-white hover:before:bg-red-900/50"
+                className="liquid-glass-button subheading group relative flex items-center space-x-2 rounded-lg border border-red-800/30 px-4 py-2 text-sm text-gray-300 transition-all duration-300 before:bg-transparent hover:border-red-800/50 hover:text-white hover:before:bg-red-900/50"
               >
                 <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-red-600/0 via-red-600/5 to-red-600/0 opacity-0 blur-xl transition-opacity duration-500 group-hover:opacity-100"></div>
                 <span className="relative z-10">Sign Out</span>
@@ -66,14 +66,14 @@ export const Navbar = () => {
               <>
                 <Link
                   to="/login"
-                  className="liquid-glass-button group relative rounded-lg border border-red-800/30 px-4 py-2 text-sm font-bold text-gray-300 transition-all duration-300 before:bg-transparent hover:border-red-800/50 hover:text-white hover:before:bg-red-900/50"
+                  className="liquid-glass-button subheading group relative rounded-lg border border-red-800/30 px-4 py-2 text-sm text-gray-300 transition-all duration-300 before:bg-transparent hover:border-red-800/50 hover:text-white hover:before:bg-red-900/50"
                 >
                   <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-red-600/0 via-red-600/5 to-red-600/0 opacity-0 blur-xl transition-opacity duration-500 group-hover:opacity-100"></div>
                   <span className="relative z-10">Login</span>
                 </Link>
                 <Link
                   to="/dashboard"
-                  className="liquid-glass-button group relative rounded-lg bg-gradient-to-r from-red-600 to-red-800 px-4 py-2 text-sm font-bold text-white transition-all duration-300 hover:from-red-700 hover:to-red-900"
+                  className="liquid-glass-button subheading group relative rounded-lg bg-gradient-to-r from-red-600 to-red-800 px-4 py-2 text-sm text-white transition-all duration-300 hover:from-red-700 hover:to-red-900"
                 >
                   <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-white/0 via-white/10 to-white/0 opacity-0 blur-xl transition-opacity duration-500 group-hover:opacity-100"></div>
                   <span className="relative z-10">Get Started</span>

@@ -123,11 +123,11 @@ export const TVShowDetail = () => {
                 {show.vote_average.toFixed(1)}
               </span>
             </div>
-            <p className="mb-6 text-lg leading-relaxed text-gray-300">
+            <p className="description-text mb-6 text-lg leading-relaxed text-gray-300">
               {show.overview}
             </p>
             <div className="mb-6">
-              <h2 className="mb-2 text-xl font-semibold text-white">Genres</h2>
+              <h2 className="subheading mb-2 text-xl text-white">Genres</h2>
               <div className="flex flex-wrap gap-2">
                 {show.genres.map(genre => (
                   <span
@@ -144,7 +144,7 @@ export const TVShowDetail = () => {
 
         {/* Seasons Section */}
         <div className="mt-12">
-          <h2 className="mb-6 text-2xl font-bold text-white">Seasons</h2>
+          <h2 className="subheading mb-6 text-2xl text-white">Seasons</h2>
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5">
             {show.seasons
               .filter(season => season.season_number > 0) // Filter out specials
@@ -162,14 +162,14 @@ export const TVShowDetail = () => {
                     />
                   </div>
                   <div className="flex flex-1 flex-col p-4">
-                    <h3 className="text-lg font-medium text-white">
+                    <h3 className="subheading text-lg text-white">
                       {season.name}
                     </h3>
-                    <p className="mt-1 text-sm text-gray-400">
+                    <p className="description-text mt-1 text-sm text-gray-400">
                       {season.episode_count} Episodes
                     </p>
                     {season.air_date && (
-                      <p className="mt-1 text-sm text-gray-400">
+                      <p className="description-text mt-1 text-sm text-gray-400">
                         {new Date(season.air_date).getFullYear()}
                       </p>
                     )}

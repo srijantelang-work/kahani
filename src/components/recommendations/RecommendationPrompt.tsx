@@ -35,9 +35,6 @@ export const RecommendationPrompt = ({
 
   return (
     <div className="flex w-full flex-col items-center justify-center text-center">
-      <h1 className="heading-futuristic bg-gradient-to-r from-red-500 via-red-600 to-red-700 bg-clip-text text-5xl font-extrabold text-transparent md:text-6xl lg:text-7xl">
-        WHAT ARE YOU IN THE MOOD FOR TODAY?
-      </h1>
       <p className="text-elegant mt-6 text-xl text-gray-300 md:text-2xl">
         Describe a vibe, a genre, or a feeling
       </p>

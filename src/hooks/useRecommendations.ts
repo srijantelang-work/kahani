@@ -42,7 +42,7 @@ export const useRecommendations = () => {
     filters: RecommendationFilters,
     history: string[]
   ): string => {
-    let prompt = `Generate personalized ${filters.mediaType} recommendations based on the following criteria:`
+    let prompt = `Generate exactly 4 personalized ${filters.mediaType} recommendations based on the following criteria:`
 
     if (filters.mood) {
       prompt += `\nMood: ${filters.mood}`
@@ -82,7 +82,9 @@ export const useRecommendations = () => {
           filters.mediaType,
           filters.genres
         )
-        return recommendations.map(rec => ({
+        // Ensure we only return 4 recommendations
+        const limitedRecommendations = recommendations.slice(0, 4)
+        return limitedRecommendations.map(rec => ({
           ...rec,
           type: filters.mediaType,
           mood: [filters.mood || 'neutral'],
