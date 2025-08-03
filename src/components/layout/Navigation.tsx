@@ -11,6 +11,7 @@ import {
   BookOpenIcon,
   LightBulbIcon,
   ClockIcon,
+  PuzzlePieceIcon,
 } from '@heroicons/react/24/outline'
 import logoImage from '../../assets/icon.png'
 
@@ -50,6 +51,18 @@ const navigation: NavigationItem[] = [
     name: 'Books',
     path: '/books',
     icon: BookOpenIcon,
+    requiresAuth: true,
+  },
+  {
+    name: 'Movie Bingo',
+    path: '/movie-bingo',
+    icon: PuzzlePieceIcon,
+    requiresAuth: true,
+  },
+  {
+    name: 'TV Show Bingo',
+    path: '/tv-bingo',
+    icon: PuzzlePieceIcon,
     requiresAuth: true,
   },
   {

@@ -69,6 +69,14 @@ const BookDetail = lazy(() =>
 const History = lazy(() =>
   import('./pages/History').then(module => ({ default: module.History }))
 )
+const MovieBingo = lazy(() =>
+  import('./pages/MovieBingo').then(module => ({ default: module.MovieBingo }))
+)
+const TVShowBingo = lazy(() =>
+  import('./pages/TVShowBingo').then(module => ({
+    default: module.TVShowBingo,
+  }))
+)
 
 // Loading fallback component
 const PageLoadingFallback = () => (
@@ -311,6 +319,30 @@ export const App = () => {
                 <Layout>
                   <ProtectedRoute>
                     <Lists />
+                  </ProtectedRoute>
+                </Layout>
+              </Suspense>
+            }
+          />
+          <Route
+            path="/movie-bingo"
+            element={
+              <Suspense fallback={<LayoutLoadingFallback />}>
+                <Layout>
+                  <ProtectedRoute>
+                    <MovieBingo />
+                  </ProtectedRoute>
+                </Layout>
+              </Suspense>
+            }
+          />
+          <Route
+            path="/tv-bingo"
+            element={
+              <Suspense fallback={<LayoutLoadingFallback />}>
+                <Layout>
+                  <ProtectedRoute>
+                    <TVShowBingo />
                   </ProtectedRoute>
                 </Layout>
               </Suspense>
