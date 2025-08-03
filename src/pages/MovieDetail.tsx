@@ -4,6 +4,8 @@ import { TMDBMovie, getImageUrl } from '../config/api'
 import { ArrowLeftIcon } from '@heroicons/react/24/outline'
 import { MovieCard } from '../components/MovieCard'
 import { useSimilarMovies } from '../hooks/useSimilarMovies'
+import { useWatchProviders } from '../hooks/useWatchProviders'
+import { WatchProviders } from '../components/WatchProviders'
 
 export const MovieDetail = () => {
   const { id } = useParams()
@@ -15,6 +17,12 @@ export const MovieDetail = () => {
   const { data: similarMovies, isLoading: isSimilarLoading } = useSimilarMovies(
     Number(id)
   )
+
+  const {
+    data: watchProviders,
+    loading: watchProvidersLoading,
+    error: watchProvidersError,
+  } = useWatchProviders('movie', Number(id))
 
   useEffect(() => {
     const fetchMovie = async () => {
@@ -98,6 +106,15 @@ export const MovieDetail = () => {
             <p className="description-text mb-6 text-lg leading-relaxed text-gray-300">
               {movie.overview}
             </p>
+
+            {/* Watch Providers Section */}
+            <WatchProviders
+              data={watchProviders}
+              loading={watchProvidersLoading}
+              error={watchProvidersError}
+              title={movie.title}
+            />
+
             <div className="mb-6">
               <h2 className="subheading mb-2 text-xl text-white">Genres</h2>
               <div className="flex flex-wrap gap-2">

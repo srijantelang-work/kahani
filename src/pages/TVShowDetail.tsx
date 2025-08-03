@@ -2,6 +2,8 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import { getImageUrl } from '../config/api'
 import { ArrowLeftIcon } from '@heroicons/react/24/outline'
+import { useWatchProviders } from '../hooks/useWatchProviders'
+import { WatchProviders } from '../components/WatchProviders'
 
 interface Season {
   id: number
@@ -43,6 +45,12 @@ export const TVShowDetail = () => {
   const [show, setShow] = useState<TVShowDetails | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+
+  const {
+    data: watchProviders,
+    loading: watchProvidersLoading,
+    error: watchProvidersError,
+  } = useWatchProviders('tv', Number(id))
 
   useEffect(() => {
     const fetchTVShow = async () => {
@@ -126,6 +134,15 @@ export const TVShowDetail = () => {
             <p className="description-text mb-6 text-lg leading-relaxed text-gray-300">
               {show.overview}
             </p>
+
+            {/* Watch Providers Section */}
+            <WatchProviders
+              data={watchProviders}
+              loading={watchProvidersLoading}
+              error={watchProvidersError}
+              title={show.name}
+            />
+
             <div className="mb-6">
               <h2 className="subheading mb-2 text-xl text-white">Genres</h2>
               <div className="flex flex-wrap gap-2">

@@ -32,6 +32,28 @@ export interface TMDBResponse<T> {
   total_results: number
 }
 
+// Watch Provider Types
+export interface WatchProvider {
+  provider_id: number
+  provider_name: string
+  logo_path: string
+  display_priority: number
+}
+
+export interface WatchProvidersResponse {
+  id: number
+  results: {
+    [countryCode: string]: {
+      link: string
+      flatrate?: WatchProvider[]
+      rent?: WatchProvider[]
+      buy?: WatchProvider[]
+      free?: WatchProvider[]
+      ads?: WatchProvider[]
+    }
+  }
+}
+
 export interface GoogleBooksVolume {
   id: string
   volumeInfo: {
@@ -62,4 +84,9 @@ export interface GoogleBooksResponse {
 export const getImageUrl = (path: string | null) => {
   if (!path) return '/placeholder-movie.jpg'
   return `https://image.tmdb.org/t/p/w500${path}`
+}
+
+export const getProviderImageUrl = (path: string | null) => {
+  if (!path) return '/placeholder-provider.svg'
+  return `https://image.tmdb.org/t/p/original${path}`
 }
