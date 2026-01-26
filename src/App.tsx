@@ -3,7 +3,7 @@ import { lazy, Suspense } from 'react'
 import { Layout } from './components/layout/Layout'
 import { useAuth } from './hooks/useAuth'
 import { SearchProvider } from './contexts/SearchContext'
-import { GeminiProvider } from './contexts/GeminiContext'
+import { GroqProvider } from './contexts/GroqContext'
 
 // Lazy load all page components for better performance
 const Landing = lazy(() =>
@@ -118,13 +118,13 @@ export const App = () => {
   const { isAuthenticated } = useAuth()
 
   return (
-    <GeminiProvider
-      apiKey={import.meta.env.VITE_GEMINI_API_KEY || ''}
-      model="gemini-2.0-flash"
+    <GroqProvider
+      apiKey={import.meta.env.VITE_GROQ_API_KEY || ''}
+      model="llama-3.3-70b-versatile"
       temperature={0.7}
-      maxOutputTokens={1024}
+      maxTokens={1024}
       retryAttempts={3}
-      retryDelay={2000}
+      retryDelay={1000}
     >
       <SearchProvider>
         <Routes>
@@ -351,6 +351,6 @@ export const App = () => {
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </SearchProvider>
-    </GeminiProvider>
+    </GroqProvider>
   )
 }

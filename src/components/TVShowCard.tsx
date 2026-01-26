@@ -8,7 +8,7 @@ interface TVShowCardProps {
   glass?: boolean
 }
 
-export const TVShowCard = ({ show, glass = true }: TVShowCardProps) => {
+export const TVShowCard = ({ show, glass = false }: TVShowCardProps) => {
   const frontContent = (
     <div
       className={`group relative flex h-full flex-col overflow-hidden rounded-lg ${glass ? 'bg-transparent backdrop-blur-sm' : 'bg-black'} shadow`}

@@ -41,6 +41,21 @@ export interface TVShowsResponse {
 
 export type MediaItem = Movie | TVShow
 
+export interface Keyword {
+  id: number
+  name: string
+}
+
+export interface DiscoverParams {
+  mediaType: 'movie' | 'tv'
+  with_genres?: number[]
+  with_keywords?: number[]
+  with_original_language?: string
+  with_origin_country?: string
+  sort_by?: string
+  page?: number
+}
+
 export const tmdb = {
   getImageUrl: (path: string | null, size: string = 'w500') => {
     if (!path) return 'https://via.placeholder.com/500x750?text=No+Image'
@@ -169,6 +184,73 @@ export const tmdb = {
       })) as Movie[]
     } catch (error) {
       console.error('Error getting popular movies:', error)
+      return []
+    }
+  },
+
+  // Search for keywords by query string
+  searchKeyword: async (query: string): Promise<Keyword[]> => {
+    try {
+      const response = await fetch(
+        `${BASE_URL}/search/keyword?api_key=${TMDB_API_KEY}&query=${encodeURIComponent(query)}&page=1`
+      )
+      if (!response.ok) {
+        console.error(
+          `Error searching keywords: ${response.status} ${response.statusText}`
+        )
+        return []
+      }
+      const data = await response.json()
+      return data.results as Keyword[]
+    } catch (error) {
+      console.error(`Error searching keywords for "${query}":`, error)
+      return []
+    }
+  },
+
+  // Discover movies or TV shows with advanced filters
+  discoverMedia: async (params: DiscoverParams): Promise<MediaItem[]> => {
+    const { mediaType, ...rest } = params
+    const searchParams = new URLSearchParams({
+      api_key: TMDB_API_KEY || '',
+      language: 'en-US',
+      include_adult: 'false',
+      page: (params.page || 1).toString(),
+      sort_by: params.sort_by || 'popularity.desc',
+    })
+
+    if (rest.with_genres && rest.with_genres.length > 0) {
+      searchParams.set('with_genres', rest.with_genres.join(','))
+    }
+    if (rest.with_keywords && rest.with_keywords.length > 0) {
+      searchParams.set('with_keywords', rest.with_keywords.join(','))
+    }
+    if (rest.with_original_language) {
+      searchParams.set('with_original_language', rest.with_original_language)
+    }
+    if (rest.with_origin_country) {
+      searchParams.set('with_origin_country', rest.with_origin_country)
+    }
+
+    const type = mediaType === 'movie' ? 'movie' : 'tv'
+    const url = `${BASE_URL}/discover/${type}?${searchParams.toString()}`
+
+    try {
+      console.log(`[TMDB Discover] URL: ${url}`)
+      const response = await fetch(url)
+      if (!response.ok) {
+        console.error(
+          `[TMDB Discover] Error: ${response.status} ${response.statusText}`
+        )
+        return []
+      }
+      const data = await response.json()
+      return data.results.map((item: any) => ({
+        ...item,
+        media_type: mediaType,
+      })) as MediaItem[]
+    } catch (error) {
+      console.error(`[TMDB Discover] Error:`, error)
       return []
     }
   },

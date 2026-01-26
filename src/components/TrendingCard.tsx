@@ -20,7 +20,7 @@ interface TrendingCardProps {
   glass?: boolean
 }
 
-export const TrendingCard = ({ item, glass = true }: TrendingCardProps) => {
+export const TrendingCard = ({ item, glass = false }: TrendingCardProps) => {
   const isTV = item.media_type === 'tv'
   const title = isTV ? item.name : item.title
   const date = isTV ? item.first_air_date : item.release_date

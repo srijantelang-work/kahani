@@ -1,0 +1,22 @@
+
+VM6:63 [GroqContext] Initialized client with baseURL: http://localhost:3000
+VM6:63 [GroqContext] Initialized client with baseURL: http://localhost:3000
+VM6:63 [GroqContext] Initialized client with baseURL: http://localhost:3000
+VM6:63 [GroqContext] Initialized client with baseURL: http://localhost:3000
+VM6:63 [GroqContext] Initialized client with baseURL: http://localhost:3000
+VM6:63 [GroqContext] Initialized client with baseURL: http://localhost:3000
+VM6:63 [GroqContext] Initialized client with baseURL: http://localhost:3000
+VM6:63 [GroqContext] Initialized client with baseURL: http://localhost:3000
+VM6:63 [GroqContext] Initialized client with baseURL: http://localhost:3000
+VM6:63 [GroqContext] Initialized client with baseURL: http://localhost:3000
+VM6:63 [GroqContext] Initialized client with baseURL: http://localhost:3000
+VM6:63 [GroqContext] Initialized client with baseURL: http://localhost:3000
+openai/v1/chat/completions:1 
+ Failed to load resource: the server responded with a status of 404 (Not Found)
+VM6:63 Groq API Error: NotFoundError: 404 status code (no body)
+    at async generateThemes (GroqContext.tsx:253:32)
+    at async useChatRecommendation.ts:51:37
+VM6:63 [GroqContext] Initialized client with baseURL: http://localhost:3000
+VM6:63 [GroqContext] Initialized client with baseURL: http://localhost:3000
+﻿
+

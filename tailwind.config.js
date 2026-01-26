@@ -52,9 +52,9 @@ export default {
         },
       },
       fontFamily: {
-        sans: ['Comic Neue', 'system-ui', 'sans-serif'],
-        raleway: ['Raleway', 'system-ui', 'sans-serif'],
-        montserrat: ['Montserrat', 'system-ui', 'sans-serif'],
+        sans: ['Sofia Pro', 'system-ui', 'sans-serif'],
+        raleway: ['Sofia Pro', 'system-ui', 'sans-serif'],
+        montserrat: ['Sofia Pro', 'system-ui', 'sans-serif'],
       },
       borderRadius: {
         lg: 'var(--radius)',

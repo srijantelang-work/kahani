@@ -6,76 +6,7 @@ import { VitePWA } from 'vite-plugin-pwa'
 export default defineConfig({
   plugins: [
     react(),
-    VitePWA({
-      registerType: 'autoUpdate',
-      includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'masked-icon.svg'],
-      manifest: {
-        name: 'Kahani - Your Personal Movie & Book Companion',
-        short_name: 'Kahani',
-        description:
-          'Discover personalized movie, TV show, and book recommendations',
-        theme_color: '#ef4444',
-        background_color: '#000000',
-        display: 'standalone',
-        icons: [
-          {
-            src: 'images/icon.png',
-            sizes: '192x192',
-            type: 'image/png',
-          },
-          {
-            src: 'images/icon.png',
-            sizes: '512x512',
-            type: 'image/png',
-          },
-        ],
-      },
-      workbox: {
-        // Cache optimization
-        runtimeCaching: [
-          {
-            urlPattern: /^https:\/\/api\.themoviedb\.org\/.*$/,
-            handler: 'CacheFirst',
-            options: {
-              cacheName: 'tmdb-api-cache',
-              expiration: {
-                maxEntries: 100,
-                maxAgeSeconds: 60 * 60 * 24, // 24 hours
-              },
-            },
-          },
-          {
-            urlPattern: /^https:\/\/image\.tmdb\.org\/.*$/,
-            handler: 'CacheFirst',
-            options: {
-              cacheName: 'tmdb-images',
-              expiration: {
-                maxEntries: 200,
-                maxAgeSeconds: 60 * 60 * 24 * 30, // 30 days
-              },
-            },
-          },
-          {
-            urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*$/,
-            handler: 'StaleWhileRevalidate',
-            options: {
-              cacheName: 'google-fonts-stylesheets',
-            },
-          },
-          {
-            urlPattern: /^https:\/\/fonts\.gstatic\.com\/.*$/,
-            handler: 'CacheFirst',
-            options: {
-              cacheName: 'google-fonts-webfonts',
-              expiration: {
-                maxEntries: 30,
-                maxAgeSeconds: 60 * 60 * 24 * 365, // 1 year
-              },
-            },
-          },
-        ],
-      },
-    }),
+    // VitePWA({...}),
   ],
   resolve: {
     alias: {
@@ -85,6 +16,24 @@ export default defineConfig({
   server: {
     port: 3000,
     host: true,
+    proxy: {
+      '/openai': {
+        target: 'https://api.groq.com',
+        changeOrigin: true,
+        secure: true,
+        configure: (proxy, _options) => {
+          proxy.on('error', (err, _req, _res) => {
+            console.log('proxy error', err);
+          });
+          proxy.on('proxyReq', (proxyReq, req, _res) => {
+            console.log('Sending Request to the Target:', req.method, req.url);
+          });
+          proxy.on('proxyRes', (proxyRes, req, _res) => {
+            console.log('Received Response from the Target:', proxyRes.statusCode, req.url);
+          });
+        },
+      },
+    },
   },
   build: {
     outDir: 'dist',

@@ -205,10 +205,9 @@ export const TrendingSection = () => {
         <div className="mt-12 text-center">
           <Link
             to="/movies"
-            className="liquid-glass-button relative inline-flex max-w-xs items-center justify-center overflow-hidden rounded-md px-6 py-3 text-base font-medium text-white transition-all duration-300 before:absolute before:inset-0 before:z-0 before:bg-gradient-to-r before:from-red-500/80 before:to-red-600/80 before:backdrop-blur-sm hover:shadow-lg hover:shadow-red-500/25 hover:before:from-red-500/90 hover:before:to-red-600/90"
+            className="inline-flex items-center justify-center rounded-md bg-red-600 px-8 py-3 text-base font-medium text-white transition-all duration-300 hover:bg-red-700 hover:shadow-lg hover:shadow-red-900/40"
           >
-            <span className="shine"></span>
-            <span className="z-10">Explore All Movies & Shows</span>
+            Explore All Movies & Shows
           </Link>
         </div>
       </div>

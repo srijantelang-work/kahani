@@ -18,7 +18,7 @@ interface MovieCardProps {
   glass?: boolean
 }
 
-export const MovieCard = ({ movie, glass = true }: MovieCardProps) => {
+export const MovieCard = ({ movie, glass = false }: MovieCardProps) => {
   const frontContent = (
     <div
       className={`group relative flex h-full flex-col overflow-hidden rounded-lg ${glass ? 'bg-transparent backdrop-blur-sm' : 'bg-black'} shadow`}

@@ -7,7 +7,7 @@ interface BookCardProps {
   glass?: boolean
 }
 
-export const BookCard = ({ book, glass = true }: BookCardProps) => {
+export const BookCard = ({ book, glass = false }: BookCardProps) => {
   const { volumeInfo } = book
   const imageUrl =
     volumeInfo.imageLinks?.thumbnail ||

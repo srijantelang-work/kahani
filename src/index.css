@@ -1,5 +1,11 @@
-@import url('https://fonts.googleapis.com/css2?family=Comic+Neue:wght@300;700&display=swap');
 @import './styles/flip-card.css';
+
+@font-face {
+  font-family: 'Sofia Pro';
+  src: url('./assets/SofiaPro-Regular.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
 
 @tailwind base;
 @tailwind components;
@@ -8,7 +14,7 @@
 /* Base styles */
 body {
   @apply bg-black text-white;
-  font-family: 'Comic Neue', system-ui, sans-serif;
+  font-family: 'Sofia Pro', system-ui, sans-serif;
   position: relative;
   overflow-x: hidden;
 }
@@ -19,20 +25,20 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: 'Comic Neue', system-ui, sans-serif;
+  font-family: 'Sofia Pro', system-ui, sans-serif;
   font-weight: 700;
 }
 
 /* Subheadings with Raleway */
 .subheading {
-  font-family: 'Raleway', system-ui, sans-serif;
+  font-family: 'Sofia Pro', system-ui, sans-serif;
   font-weight: 400;
   letter-spacing: 0.02em;
 }
 
 /* Description text with thin weight */
 .description-text {
-  font-family: 'Raleway', system-ui, sans-serif;
+  font-family: 'Sofia Pro', system-ui, sans-serif;
   font-weight: 100;
   letter-spacing: 0.02em;
   line-height: 1.6;
@@ -40,20 +46,20 @@ h6 {
 
 /* Custom Typography Classes */
 .heading-futuristic {
-  font-family: 'Comic Neue', system-ui, sans-serif;
+  font-family: 'Sofia Pro', system-ui, sans-serif;
   font-weight: 700;
   letter-spacing: 0.05em;
   text-transform: uppercase;
 }
 
 .text-modern {
-  font-family: 'Comic Neue', system-ui, sans-serif;
+  font-family: 'Sofia Pro', system-ui, sans-serif;
   font-weight: 300;
   letter-spacing: 0.02em;
 }
 
 .text-elegant {
-  font-family: 'Comic Neue', system-ui, sans-serif;
+  font-family: 'Sofia Pro', system-ui, sans-serif;
   font-weight: 300;
   letter-spacing: 0.03em;
 }
@@ -80,11 +86,9 @@ h6 {
   height: 120%;
   top: -10%;
   left: -10%;
-  background: radial-gradient(
-    circle,
-    rgba(255, 0, 0, 0.08) 0%,
-    rgba(255, 0, 0, 0) 70%
-  );
+  background: radial-gradient(circle,
+      rgba(255, 0, 0, 0.08) 0%,
+      rgba(255, 0, 0, 0) 70%);
   will-change: transform;
   contain: strict;
   z-index: -1;
@@ -97,11 +101,9 @@ h6 {
   }
 
   .liquid-glass-bg::after {
-    background: radial-gradient(
-      circle,
-      rgba(255, 255, 255, 0.03) 0%,
-      rgba(255, 255, 255, 0) 60%
-    );
+    background: radial-gradient(circle,
+        rgba(255, 255, 255, 0.03) 0%,
+        rgba(255, 255, 255, 0) 60%);
     animation: rotate-slow 40s linear infinite reverse;
   }
 }
@@ -111,6 +113,7 @@ h6 {
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
@@ -119,30 +122,21 @@ h6 {
 /* Content overlay for better readability */
 .content-overlay {
   position: relative;
-  background: linear-gradient(
-    to bottom,
-    rgba(0, 0, 0, 0.3),
-    rgba(0, 0, 0, 0.1)
-  );
-  backdrop-filter: blur(10px);
+  background: black;
   min-height: 100vh;
 }
 
 /* Glass UI Effects */
 
 /* Base glass effect for all components */
+/* Base glass effect removed - fallback to solid */
 .glass-effect {
   position: relative;
   isolation: isolate;
   overflow: hidden;
-  background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.12),
-    rgba(255, 255, 255, 0.03)
-  );
-  backdrop-filter: blur(7px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  background: #111;
+  border: 1px solid #222;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
 }
 
 /* Glass Button Effects */
@@ -166,11 +160,9 @@ h6 {
   position: absolute;
   inset: 0;
   z-index: -2;
-  background: linear-gradient(
-    130deg,
-    rgba(255, 255, 255, 0.12),
-    rgba(255, 255, 255, 0.05) 60%
-  );
+  background: linear-gradient(130deg,
+      rgba(255, 255, 255, 0.12),
+      rgba(255, 255, 255, 0.05) 60%);
   border-radius: inherit;
 }
 
@@ -190,11 +182,9 @@ h6 {
   left: -50%;
   right: -50%;
   bottom: -50%;
-  background: radial-gradient(
-    circle at center,
-    rgba(255, 255, 255, 0.15) 0%,
-    rgba(255, 255, 255, 0) 70%
-  );
+  background: radial-gradient(circle at center,
+      rgba(255, 255, 255, 0.15) 0%,
+      rgba(255, 255, 255, 0) 70%);
   transform: rotate(30deg) translateY(-100%) translateX(-100%);
   z-index: 1;
   pointer-events: none;
@@ -204,6 +194,7 @@ h6 {
 
 /* Only animate shine effect if user hasn't requested reduced motion */
 @media (prefers-reduced-motion: no-preference) {
+
   .shine,
   .shine-text {
     animation: shine 8s infinite alternate;
@@ -214,6 +205,7 @@ h6 {
   0% {
     transform: rotate(25deg) translateY(-100%) translateX(-100%);
   }
+
   100% {
     transform: rotate(35deg) translateY(0%) translateX(0%);
   }
@@ -223,11 +215,9 @@ h6 {
 .liquid-glass-card {
   position: relative;
   overflow: hidden;
-  background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.1),
-    rgba(255, 255, 255, 0.03)
-  );
+  background: linear-gradient(135deg,
+      rgba(255, 255, 255, 0.1),
+      rgba(255, 255, 255, 0.03));
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
@@ -245,11 +235,9 @@ h6 {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.2) 0%,
-    rgba(255, 255, 255, 0) 60%
-  );
+  background: linear-gradient(135deg,
+      rgba(255, 255, 255, 0.2) 0%,
+      rgba(255, 255, 255, 0) 60%);
   border-radius: inherit;
   opacity: 0;
   transition: opacity 0.3s ease;
@@ -291,14 +279,12 @@ h6 {
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(
-    45deg,
-    rgba(255, 255, 255, 0) 0%,
-    rgba(255, 255, 255, 0.02) 25%,
-    rgba(255, 255, 255, 0.4) 50%,
-    rgba(255, 255, 255, 0.02) 75%,
-    rgba(255, 255, 255, 0) 100%
-  );
+  background: linear-gradient(45deg,
+      rgba(255, 255, 255, 0) 0%,
+      rgba(255, 255, 255, 0.02) 25%,
+      rgba(255, 255, 255, 0.4) 50%,
+      rgba(255, 255, 255, 0.02) 75%,
+      rgba(255, 255, 255, 0) 100%);
   background-size: 250% 250%;
   pointer-events: none;
   background-clip: text;
@@ -310,14 +296,12 @@ h6 {
 }
 
 .liquid-glass-text .shine-text.red {
-  background: linear-gradient(
-    45deg,
-    rgba(255, 255, 255, 0) 0%,
-    rgba(255, 255, 255, 0.02) 25%,
-    rgba(255, 255, 255, 0.3) 50%,
-    rgba(255, 255, 255, 0.02) 75%,
-    rgba(255, 255, 255, 0) 100%
-  );
+  background: linear-gradient(45deg,
+      rgba(255, 255, 255, 0) 0%,
+      rgba(255, 255, 255, 0.02) 25%,
+      rgba(255, 255, 255, 0.3) 50%,
+      rgba(255, 255, 255, 0.02) 75%,
+      rgba(255, 255, 255, 0) 100%);
   background-clip: text;
   -webkit-background-clip: text;
 }
@@ -337,9 +321,11 @@ h6 {
   0% {
     background-position: 0% 200%;
   }
+
   50% {
     background-position: 100% 0%;
   }
+
   100% {
     background-position: 0% 200%;
   }
@@ -349,9 +335,11 @@ h6 {
   0% {
     background-position: 200% 0%;
   }
+
   50% {
     background-position: 0% 200%;
   }
+
   100% {
     background-position: 200% 0%;
   }
@@ -425,14 +413,16 @@ h6 {
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground;
     font-feature-settings:
       'rlig' 1,
       'calt' 1;
   }
+
   html {
-    font-family: 'Comic Neue', system-ui, sans-serif;
+    font-family: 'Sofia Pro', system-ui, sans-serif;
   }
 
   h1,
@@ -441,11 +431,11 @@ h6 {
   h4,
   h5,
   h6 {
-    font-family: 'Comic Neue', sans-serif;
+    font-family: 'Sofia Pro', sans-serif;
   }
 
   .kahani-brand {
-    font-family: 'Comic Neue', sans-serif;
+    font-family: 'Sofia Pro', sans-serif;
     font-weight: 700;
   }
 }
@@ -462,12 +452,15 @@ h6 {
 
 @layer utilities {
   .hide-scrollbar {
-    -ms-overflow-style: none; /* IE and Edge */
-    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
   }
 
   .hide-scrollbar::-webkit-scrollbar {
-    display: none; /* Chrome, Safari and Opera */
+    display: none;
+    /* Chrome, Safari and Opera */
   }
 }
 
@@ -492,6 +485,55 @@ h6 {
 .poster-container {
   perspective: 2000px;
   transform-style: preserve-3d;
+}
+
+/* Retro TV Animations */
+@keyframes scanline {
+  0% {
+    transform: translateY(0);
+  }
+
+  100% {
+    transform: translateY(100vh);
+  }
+}
+
+@keyframes flicker {
+
+  0%,
+  100% {
+    opacity: 0.9;
+  }
+
+  50% {
+    opacity: 0.85;
+  }
+
+  70% {
+    opacity: 0.95;
+  }
+}
+
+.animate-scanline {
+  animation: scanline 6s linear infinite;
+}
+
+.animate-flicker {
+  animation: flicker 0.15s infinite;
+}
+
+/* Perspective utility for 3D transforms */
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+/* 3D rotation utilities */
+.rotate-y-\[-5deg\] {
+  transform: rotateY(-5deg);
+}
+
+.rotate-x-\[2deg\] {
+  transform: rotateX(2deg);
 }
 
 /* Add your other custom styles below */

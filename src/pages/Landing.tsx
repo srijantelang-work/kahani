@@ -12,6 +12,8 @@ import { Footer } from '../components/layout/Footer'
 import { useAuth } from '../hooks/useAuth'
 import { HowItWorks } from '../components/layout/HowItWorks'
 import { motion } from 'framer-motion'
+import { TVHero } from '../components/TVHero'
+
 
 // Lazy load heavy components to improve initial page load
 const TrendingSection = lazy(() =>
@@ -92,66 +94,53 @@ export const Landing = () => {
       <Navbar />
 
       {/* Hero Section */}
-      <div className="relative min-h-screen overflow-hidden">
-        <div className="mx-auto flex min-h-screen max-w-7xl flex-col items-center justify-center px-4 text-center sm:px-6 lg:px-8">
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="font-montserrat text-6xl font-semibold tracking-tight text-red-600 sm:text-7xl md:text-8xl lg:text-9xl"
-          >
-            KAHANI
-          </motion.h1>
+      <div className="relative min-h-screen w-full overflow-hidden bg-black flex items-center">
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="mt-8 max-w-3xl"
-          >
-            <h2 className="font-raleway text-2xl font-thin tracking-wide text-white sm:text-3xl md:text-4xl">
-              Discover Your Next Favorite Show or Movie or Book
-            </h2>
-            <p className="mt-4 text-base text-gray-300 sm:text-lg md:text-xl">
-              Kahani uses AI to provide personalized recommendations based on
-              your unique preferences and interests.
-            </p>
-          </motion.div>
+        <div className="relative mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-16 py-20 lg:py-0">
 
+          {/* Left Side - Text Content */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            className="mt-12 flex flex-col space-y-4 sm:flex-row sm:space-x-6 sm:space-y-0"
+            initial={{ opacity: 0, x: -40 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="flex-1 text-center lg:text-left max-w-xl"
           >
-            {user ? (
+            <h1 className="font-montserrat text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-black uppercase leading-none tracking-tighter text-white">
+              KAHANI
+            </h1>
+
+            <div className="mt-6">
+              <p className="font-raleway text-2xl sm:text-3xl md:text-4xl font-light text-white/90 tracking-wide">
+                Discover Your Next
+              </p>
+              <p className="font-raleway text-xl sm:text-2xl md:text-3xl font-light text-white/60 tracking-wide mt-1">
+                Show <span className="text-white/40">/</span> Movie <span className="text-white/40">/</span> Book
+              </p>
+            </div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+              className="mt-10"
+            >
               <Link
                 to="/dashboard"
-                className="liquid-glass-button relative flex items-center justify-center overflow-hidden rounded-md px-8 py-4 text-lg font-medium text-white transition-all duration-300 before:absolute before:inset-0 before:z-0 before:bg-gradient-to-r before:from-red-500/80 before:to-red-600/80 before:backdrop-blur-sm hover:shadow-lg hover:shadow-red-500/25 hover:before:from-red-500/90 hover:before:to-red-600/90"
+                className="inline-block bg-white text-black font-bold text-sm tracking-widest uppercase px-8 py-4 rounded-sm transition-all duration-300 hover:bg-red-600 hover:text-white"
               >
-                <span className="shine"></span>
-                <span className="z-10">Go to Recommendations</span>
+                Start Exploring
               </Link>
-            ) : (
-              <>
-                <Link
-                  to="/dashboard"
-                  className="liquid-glass-button relative flex items-center justify-center overflow-hidden rounded-md px-8 py-4 text-lg font-medium text-white transition-all duration-300 before:absolute before:inset-0 before:z-0 before:bg-gradient-to-r before:from-red-500/80 before:to-red-600/80 before:backdrop-blur-sm hover:shadow-lg hover:shadow-red-500/25 hover:before:from-red-500/90 hover:before:to-red-600/90"
-                >
-                  <span className="shine"></span>
-                  <span className="z-10 flex items-center">
-                    <span className="mr-2 h-0.5 w-5 rounded bg-white/90"></span>
-                    Get Started — It's Free
-                  </span>
-                </Link>
-                <Link
-                  to="/login"
-                  className="flex items-center justify-center rounded-md border border-gray-600 bg-transparent px-8 py-4 text-lg font-medium text-white transition-colors hover:bg-white/5"
-                >
-                  Sign In
-                </Link>
-              </>
-            )}
+            </motion.div>
+          </motion.div>
+
+          {/* Right Side - TV */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+            className="flex-1 w-full max-w-lg lg:max-w-xl"
+          >
+            <TVHero />
           </motion.div>
         </div>
       </div>
@@ -197,7 +186,7 @@ export const Landing = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.5 }}
-                  className="feature-card rounded-2xl border border-red-500/20 bg-black/30 p-6 shadow-lg backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:shadow-red-500/20"
+                  className="feature-card rounded-2xl border border-red-500/20 bg-neutral-900/50 p-6 shadow-lg transition-all duration-300 hover:-translate-y-1 hover:shadow-red-500/20"
                 >
                   <div className="relative pl-16">
                     <dt className="text-base font-semibold leading-7">
