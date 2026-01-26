@@ -53,36 +53,18 @@ interface Feature {
   icon: typeof BeakerIcon
 }
 
-const features: Feature[] = [
+const features = [
   {
     name: 'AI-Powered Discovery',
-    description:
-      'Powered by Gemini AI to understand your preferences and provide intelligent, context-aware recommendations across movies, TV shows, and books.',
-    icon: BeakerIcon,
+    description: 'Our advanced Gemini AI understands your unique taste to suggest your next favorite show, movie, or book with uncanny precision.',
   },
   {
-    name: 'Multi-Platform Content',
-    description:
-      'Seamlessly integrates content from TMDB and Google Books, giving you access to a vast library of movies, TV shows, and books all in one place.',
-    icon: FilmIcon,
+    name: 'Unified Library',
+    description: 'Explore a vast universe of entertainment. Seamlessly browse through millions of titles across movies, television, and literature in one place.',
   },
   {
-    name: 'Smart Search & Filters',
-    description:
-      'Advanced search with natural language processing and intelligent filters to help you find exactly what you want to watch or read.',
-    icon: MagnifyingGlassIcon,
-  },
-  {
-    name: 'Personalized Experience',
-    description:
-      'Create collections, track your history, and get recommendations tailored to your unique taste and viewing patterns.',
-    icon: BookmarkIcon,
-  },
-  {
-    name: 'Offline Access',
-    description:
-      'Progressive Web App with offline support, caching your favorite content and searches for uninterrupted access.',
-    icon: WifiIcon,
+    name: 'Smart Collections',
+    description: 'Build your personal sanctuary of stories. Effortlessly organize, track, and revisit the tales that move you.',
   },
 ]
 
@@ -150,63 +132,40 @@ export const Landing = () => {
         <TrendingSection />
       </Suspense>
 
-      {/* Features Section */}
-      <div
-        id="features"
-        className="relative overflow-hidden bg-neutral-900 py-24"
-      >
-        {/* Background gradient effects */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black via-red-950/5 to-black" />
+      {/* Features Section - Cinematic Spotlight */}
+      <div id="features" className="bg-black py-32 sm:py-48">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="space-y-32 sm:space-y-64">
+            {features.map((feature, index) => (
+              <motion.div
+                key={feature.name}
+                initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-10%" }}
+                transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+                className="group relative flex flex-col items-center text-center"
+              >
+                {/* Visual Glow */}
+                <div className="absolute -inset-10 rounded-full bg-red-600/5 blur-3xl transition-opacity duration-700 group-hover:bg-red-600/10" />
 
-        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-2xl lg:text-center">
-            <motion.h2
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="relative inline-block font-montserrat text-2xl font-semibold uppercase tracking-wider text-red-600 sm:text-3xl"
-            >
-              <span className="relative z-10">Features</span>
-              <div className="absolute -bottom-1 left-0 h-[2px] w-full bg-gradient-to-r from-red-600/80 to-transparent"></div>
-            </motion.h2>
-            <p className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">
-              Everything you need to discover your next favorite
-            </p>
-            <p className="mt-6 text-lg leading-8 text-gray-300">
-              Explore a world of entertainment with our powerful features
-              designed to enhance your discovery experience.
-            </p>
-          </div>
-          <div className="mx-auto mt-16 max-w-2xl sm:mt-20 lg:mt-24 lg:max-w-none">
-            <dl className="grid max-w-xl grid-cols-1 gap-x-8 gap-y-16 md:grid-cols-2 lg:max-w-none lg:grid-cols-3">
-              {features.map(feature => (
-                <motion.div
-                  key={feature.name}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5 }}
-                  className="feature-card rounded-2xl border border-red-500/20 bg-neutral-900/50 p-6 shadow-lg transition-all duration-300 hover:-translate-y-1 hover:shadow-red-500/20"
-                >
-                  <div className="relative pl-16">
-                    <dt className="text-base font-semibold leading-7">
-                      <div className="absolute left-0 top-0 flex h-12 w-12 items-center justify-center rounded-lg bg-gradient-to-br from-red-600 to-red-900">
-                        <feature.icon
-                          className="h-6 w-6 text-white"
-                          aria-hidden="true"
-                        />
-                      </div>
-                      <span className="bg-gradient-to-r from-red-500 to-red-800 bg-clip-text text-transparent">
-                        {feature.name}
-                      </span>
-                    </dt>
-                    <dd className="mt-2 text-base leading-7 text-gray-300">
-                      {feature.description}
-                    </dd>
-                  </div>
-                </motion.div>
-              ))}
-            </dl>
+                <span className="mb-4 font-montserrat text-sm font-bold uppercase tracking-[0.3em] text-red-600/60">
+                  Step 0{index + 1}
+                </span>
+
+                <h2 className="relative font-montserrat text-5xl sm:text-7xl md:text-8xl font-black uppercase tracking-tight text-white mb-8">
+                  {feature.name}
+                </h2>
+
+                <p className="relative max-w-2xl font-raleway text-xl sm:text-2xl font-light leading-relaxed text-white/50 transition-colors duration-500 group-hover:text-white/80">
+                  {feature.description}
+                </p>
+
+                {/* Vertical Line Connector */}
+                {index !== features.length - 1 && (
+                  <div className="absolute -bottom-48 left-1/2 h-24 w-[1px] -translate-x-1/2 bg-gradient-to-b from-red-600/30 to-transparent sm:h-32" />
+                )}
+              </motion.div>
+            ))}
           </div>
         </div>
       </div>

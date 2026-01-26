@@ -23,7 +23,7 @@ export function PageLayout({
         <Navigation />
         <main
           className={cn(
-            'relative z-10 pt-16', // Account for fixed navigation and ensure content is above background
+            'relative z-10 pt-28', // Account for fixed navigation and ensure content is above background
             className
           )}
         >
